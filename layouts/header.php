@@ -171,12 +171,14 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Hot Deals</a></li>
-						<li><a href="#">Categories</a></li>
+						<?php foreach(dbQuery('SELECT * from `category` where status="active"') as $value ) {?>
+						<li><a href="products.php?category=<?=strtolower($value->name)?>"><?=$value->name?></a></li>
+						<?php } ?>
+						<!-- <li><a href="#">Categories</a></li>
 						<li><a href="#">Laptops</a></li>
 						<li><a href="#">Smartphones</a></li>
 						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li><a href="#">Accessories</a></li> -->
 					</ul>
 					<!-- /NAV -->
 				</div>
