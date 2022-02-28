@@ -171,8 +171,8 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="#">Home</a></li>
-						<?php foreach(dbQuery('SELECT * from `category` where status="active"') as $value ) {?>
-						<li><a href="products.php?category=<?=strtolower($value->name)?>"><?=$value->name?></a></li>
+						<?php foreach(dbQuery('SELECT * from `category` where status="1"') as $value ) {?>
+						<li><a href="products.php?category=<?=$value->name?>"><?=$value->name?></a></li>
 						<?php } ?>
 						<!-- <li><a href="#">Categories</a></li>
 						<li><a href="#">Laptops</a></li>

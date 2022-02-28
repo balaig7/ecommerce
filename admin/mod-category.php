@@ -37,7 +37,7 @@
                </div>
                <label>Status</label>
                <div class="switch primary">
-                  <input type="checkbox" id="switch-2" name="status" <?=$category->status=='1'?'checked':''?>><label for="switch-2"></label>
+                  <input type="checkbox" id="switch-2" class="status" name="status" value="<?=$category->status?>" <?=$category->status=='1'?'checked':''?>><label for="switch-2"></label>
                </div>
                <label>Are you want to add subcategory?</label>
                <div class="form-group">
@@ -96,6 +96,15 @@
 
       }
    }
+   $(document).on('change','.status',function(){
+          if($(this).is(":checked")){
+            $(this).val('1');
+          }else{
+            $(this).val('0');
+          }
+
+      
+   })
 	$(document).on('click','.fa-plus-circle',function(){
 		$(this).removeClass("fa-plus-circle text-primary")
 		$(this).addClass("fa-minus-circle text-danger")

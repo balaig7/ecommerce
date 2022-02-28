@@ -34,7 +34,7 @@ $products=get('products');
                   <td><?=$value->name?></td>
                   <td>
                      <a href="mod-category.php?id=<?=$value->id?>" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-pencil"></i></a>
-                     <button type="button" class="btn btn-danger btn-circle btn-sm waves-effect waves-light" onclick=deleteData('ajax.php','<?=json_encode(array("id"=>$value->id,"action"=>"delete-category" ));?>','post')><i class="ico fa fa-trash"></i></button>
+                     <!-- <button type="button" class="btn btn-danger btn-circle btn-sm waves-effect waves-light" onclick=deleteData('ajax.php','<?=json_encode(array("id"=>$value->id,"action"=>"delete-category" ));?>','post')><i class="ico fa fa-trash"></i></button> -->
                   </td>
                </tr>
                <?php } ?>
@@ -60,16 +60,6 @@ $products=get('products');
                   ?>
                </tr>
             </thead>
-            <!-- <tfoot>
-               <tr>
-               	<th>Name</th>
-               	<th>Position</th>
-               	<th>Office</th>
-               	<th>Age</th>
-               	<th>Start date</th>
-               	<th>Salary</th>
-               </tr>
-               </tfoot> -->
             <tbody>
                <?php foreach ($products as $key => $value) { ?>
                <tr>
@@ -92,7 +82,6 @@ $products=get('products');
 
 <?php
 include __DIR__."/layouts/footer.php";
-// getfooter();
 ?>
 <script>
     $('.datatable').dataTable();

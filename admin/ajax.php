@@ -7,7 +7,7 @@ switch ($action)
 {
     case 'create-category':
         $status = '0';
-        if ($_POST['status'] == 'on')
+        if (!empty($_POST['status']))
         {
             $status = '1';
         }
@@ -20,6 +20,7 @@ switch ($action)
         {
             $isChildrens = '0';
         }
+              
         //keys must be db table fields
         $insertParentCategory = array(
             'name' => mysqli_real_escape_string($conn, $_POST['name']) ,
@@ -28,6 +29,7 @@ switch ($action)
             'success_message' => $_POST['success_message'],
             'redirect_url' => $_POST['redirect_url']
         );
+        
         if ($isChildrens == '0')
         {
             create('category', $insertParentCategory);
@@ -91,15 +93,10 @@ switch ($action)
             'success_message' => $_POST['success_message'],
             'redirect_url' => $_POST['redirect_url']
         );
-        // echo "<pre>";
-        // print_r($updateCategory);
-        // exit;
+        
         $getSubCategories = dbQuery("SELECT id from `sub_category` where parent_id='" . $id . "'");
         if ($isChildrens == '0')
         {
-            // echo "<pre>";
-            // print_r($getSubCategories);
-            // exit;
             if (!empty($getSubCategories))
             {
                 foreach ($getSubCategories as $key => $value)
@@ -110,12 +107,8 @@ switch ($action)
                         $isSubCategoryDeleted = 1;
                     }
                 }
-                if ($isSubCategoryDeleted)
-                {
-                    update($id, 'category', $updateCategory);
-                }
             }
-
+            update($id, 'category', $updateCategory);
         }
         else
         {
@@ -185,30 +178,57 @@ switch ($action)
     break;
     case 'create-product':
         $isproductImageUploaded = $isthumnailImageUploaded = 0;
+        // echo "<pre>";
+        // print_r($_POST);
+        // print_r($_FILES);
+        // exit;
 
         foreach ($_FILES['product_images']['name'] as $key => $value)
         {
             $imageName = $value;
+            $parentCategory=explode("-",$_POST['parent_category_id']);
+           
             $temp_name = $_FILES['product_images']['tmp_name'][$key];
             if (!file_exists('../assets/uploads/'))
             {
                 mkdir('../assets/uploads/', 0777, true); //create new folder inside assets
                 
             }
-            $target_file = '../assets/uploads/' . basename($imageName);
+            if (!file_exists('../assets/uploads/'. $parentCategory['1']))
+            {
+                mkdir('../assets/uploads/'. $parentCategory['1'], 0777, true); //create new folder inside assets
+                
+            }
+            if(!empty($_POST['child_category_id'])){
+                $childCategory=explode("-",$_POST['child_category_id']);
+                if (!file_exists('../assets/uploads/'. $parentCategory['1'].'/'.$childCategory['1'].''))
+            {
+                mkdir('../assets/uploads/'. $parentCategory['1'].'/'.$childCategory['1'].'', 0777, true); //create new folder inside assets
+                $productImagesPath='../assets/uploads/'. $parentCategory['1'].'/'.$childCategory['1'].'/';
+                
+            }
+            $subCategoryId=$childCategory['0'];
+            }else{
+                $productImagesPath='../assets/uploads/'. $parentCategory['1'].'/';
+                $subCategoryId=$_POST['child_category_id'];
+
+            }
+
+            $target_file = $productImagesPath . basename($imageName);
             if (move_uploaded_file($temp_name, $target_file))
             {
                 $isproductImageUploaded .= 1;
             }
         }
         $thumnailImage = $_FILES['thumnail_image']['name'];
-        if (!file_exists('../assets/uploads/thumnails/'))
+        if (!file_exists('../assets/uploads/'. $parentCategory['1'].'/thumnails'))
         {
-            mkdir('../assets/uploads/thumnails/', 0777, true); //create new folder inside assets
+            mkdir('../assets/uploads/'. $parentCategory['1'].'/thumnails', 0777, true); //create new folder inside assets
             
         }
+        $thumnailImagePath='../assets/uploads/'. $parentCategory['1'].'/thumnails/';
         $thumb_temp_name = $_FILES['thumnail_image']['tmp_name'];
-        $thumb_target_file = '../assets/uploads/thumnails/' . basename($thumnailImage);
+        $thumb_target_file = $thumnailImagePath . basename($thumnailImage);
         if (move_uploaded_file($thumb_temp_name, $thumb_target_file))
         {
             $isthumnailImageUploaded .= 1;
@@ -216,11 +236,20 @@ switch ($action)
 
         if ($isproductImageUploaded && $isthumnailImageUploaded)
         {
+            $_POST['product_images_path']=$productImagesPath;
+            $_POST['thumnail_image_path']=$thumnailImagePath;
             $_POST['product_images'] = implode(',', $_FILES['product_images']['name']);
             $_POST['thumnail_image'] = $thumnailImage;
+            $_POST['parent_category_id']=$parentCategory['0'];
+            $_POST['child_category_id']=$subCategoryId;
             create('products', $_POST);
         }
-
+    break;
+    case "get-sub-category":
+        $subcategory=dbQuery("SELECT id,name from `sub_category` where parent_id='" . $_POST['parent_id'] . "'");
+        echo json_encode($subcategory);
+        exit;
+    break;
     default:
         # code...
         

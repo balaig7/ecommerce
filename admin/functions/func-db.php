@@ -4,6 +4,7 @@ date_default_timezone_set("Asia/Kolkata");   //India time (GMT+5:30)
 
 //insert data
 function create($table,$data){
+   
     global $conn;
     $message=$data['success_message'];
     $redirectUrl=$data['redirect_url'];

@@ -1,6 +1,9 @@
 <?php
 include __DIR__."/loader.php";
 $product=find(2,'products');
+$category=dbQuery('SELECT * from `category` where name ="'.$_GET["category"].'"');
+$subCategories=dbQuery('SELECT * from `sub_category` where parent_id ="'.$category[0]->id.'"');
+
 if (isset($_GET['pageno'])) {
             $pageno = $_GET['pageno'];
         } else {
@@ -37,15 +40,17 @@ if (isset($_GET['pageno'])) {
                         <div class="aside">
 							<h3 class="aside-title">Brand</h3>
 							<div class="checkbox-filter">
+								<?php foreach($subCategories as $value){ ?>
 								<div class="input-checkbox">
 									<input type="checkbox" id="brand-1">
 									<label for="brand-1">
 										<span></span>
-										SAMSUNG
+										<?=$value->name?>
 										<small>(578)</small>
 									</label>
 								</div>
-								<div class="input-checkbox">
+								<?php } ?>
+								<!-- <div class="input-checkbox">
 									<input type="checkbox" id="brand-2">
 									<label for="brand-2">
 										<span></span>
@@ -84,7 +89,7 @@ if (isset($_GET['pageno'])) {
 										SONY
 										<small>(755)</small>
 									</label>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="aside">
