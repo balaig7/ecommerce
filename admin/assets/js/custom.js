@@ -14,7 +14,7 @@ function post(data, url, method) {
                     window.location = response.redirectUrl;
                 });
             } else {
-                Swal('Error', '', 'error')
+                Swal({ title: 'Error', text: '', type: 'error' })
             }
         }
     })
@@ -56,7 +56,7 @@ function deleteData(url, data, method) {
                         location.reload();
                     });
                 } else {
-                    Swal('Error', '', 'error')
+                    Swal({ title: 'Error', text: '', type: 'error' })
                 }
             }
         })
@@ -82,7 +82,7 @@ function postFiles(formName, url, method) {
                     window.location = response.redirectUrl;
                 });
             } else {
-                Swal('Error', '', 'error')
+                Swal({title:'Error', text:'', type:'error'})
             }
 
         }
@@ -120,10 +120,11 @@ $("#create-product").validate({
     },
     submitHandler: function (form) {
         // alert($(this));
-
         postFiles(form, "ajax.php", "post");
     }
 });
+
+
     // !function () { "use strict"; tinyMCE.baseURL = tinyMCE.baseURL+"/assets/plugin/tinymce", tinymce.init({ selector: "#tinymce", height: 500, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste code"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image", content_css: "assets/plugin/tinymce/content.min.css" }), tinymce.init({ selector: "h2.editable", inline: !0, toolbar: "undo redo", menubar: !1 }), tinymce.init({ selector: "div.editable", inline: !0, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" }) }(jQuery);
 
     // tinymce.init({

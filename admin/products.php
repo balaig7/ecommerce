@@ -56,20 +56,21 @@ $products=get('products');
             <thead>
                <tr>
                   <?php 
-                  tableHead(array('Name','Quantity','Status','Original Price','Discounted Price','Action'));
+                  tableHead(array('S.no','Name','Quantity','Status','Original Price','Discounted Price','Action'));
                   ?>
                </tr>
             </thead>
             <tbody>
                <?php foreach ($products as $key => $value) { ?>
                <tr>
-                  <td></td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
+                  <td><?=$key+1?></td>
+                  <td><?=$value->name?></td>
+                  <td><?=$value->quantity?></td>
+                  <td><span class='notice <?=$value->status =='in stock' ? 'bg-success':'bg-danger' ?>  text-white'><?=strtoupper($value->status)?></span></td>
+                  <td><?=$value->original_price?></td>
+                  <td><?=$value->discounted_price?></td>
+                  <td><a href="mod-products.php?id=<?=$value->id?>" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-pencil"></i></a></td>
                </tr>
-            
                <?php } ?>
                
             </tbody>
