@@ -14,7 +14,11 @@ function post(data, url, method) {
                     window.location = response.redirectUrl;
                 });
             } else {
-                Swal({ title: 'Error', text: '', type: 'error' })
+                Swal({
+                    title: 'Error',
+                    text: '',
+                    type: 'error'
+                })
             }
         }
     })
@@ -30,38 +34,44 @@ function deleteData(url, data, method) {
         text: "Are you sure you want to delete?",
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes",
         cancelButtonText: "No",
         closeOnConfirm: false,
         closeOnCancel: false,
         confirmButtonColor: "#f60e0e"
-    }, function (e) {
-
-
-        $.ajax({
-            url: url,
-            type: method,
-            processData: false,
-            contentType: false,
-            data: form_data,
-            success: function (data) {
-                var response = $.parseJSON(data);
-                if (response.status == 'success') {
-                    swal({
-                        title: response.message,
-                        text: '',
-                        type: 'success'
-                    }, function () {
-                        location.reload();
-                    });
-                } else {
-                    Swal({ title: 'Error', text: '', type: 'error' })
+    }, function (isConfirm) {
+        if (isConfirm) {
+            $.ajax({
+                url: url,
+                type: method,
+                processData: false,
+                contentType: false,
+                data: form_data,
+                success: function (data) {
+                    var response = $.parseJSON(data);
+                    if (response.status == 'success') {
+                        swal({
+                            title: response.message,
+                            text: '',
+                            type: 'success'
+                        }, function () {
+                            location.reload();
+                        });
+                    } else {
+                        Swal({
+                            title: 'Error',
+                            text: '',
+                            type: 'error'
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }else {
+            swal("Cancelled", "", "error");
+        }
     })
-    }
+
+}
 
 function postFiles(formName, url, method) {
     var formdata = new FormData($(formName)[0])
@@ -82,7 +92,11 @@ function postFiles(formName, url, method) {
                     window.location = response.redirectUrl;
                 });
             } else {
-                Swal({title:'Error', text:'', type:'error'})
+                Swal({
+                    title: 'Error',
+                    text: '',
+                    type: 'error'
+                })
             }
 
         }
@@ -125,9 +139,9 @@ $("#create-product").validate({
 });
 
 
-    // !function () { "use strict"; tinyMCE.baseURL = tinyMCE.baseURL+"/assets/plugin/tinymce", tinymce.init({ selector: "#tinymce", height: 500, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste code"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image", content_css: "assets/plugin/tinymce/content.min.css" }), tinymce.init({ selector: "h2.editable", inline: !0, toolbar: "undo redo", menubar: !1 }), tinymce.init({ selector: "div.editable", inline: !0, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" }) }(jQuery);
+// !function () { "use strict"; tinyMCE.baseURL = tinyMCE.baseURL+"/assets/plugin/tinymce", tinymce.init({ selector: "#tinymce", height: 500, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste code"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image", content_css: "assets/plugin/tinymce/content.min.css" }), tinymce.init({ selector: "h2.editable", inline: !0, toolbar: "undo redo", menubar: !1 }), tinymce.init({ selector: "div.editable", inline: !0, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" }) }(jQuery);
 
-    // tinymce.init({
-    //     selector: 'textarea',  // change this value according to your HTML
-    //     plugins: 'advlist autolink link image lists charmap print preview'
-    // });
+// tinymce.init({
+//     selector: 'textarea',  // change this value according to your HTML
+//     plugins: 'advlist autolink link image lists charmap print preview'
+// });

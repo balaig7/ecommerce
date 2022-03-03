@@ -1,6 +1,6 @@
 <?php
+$title="PRODUCTS";
 include __DIR__."/loader.php";
-// getHeader();
 $category=get('category');
 $products=get('products');
 ?>
@@ -56,7 +56,7 @@ $products=get('products');
             <thead>
                <tr>
                   <?php 
-                  tableHead(array('S.no','Name','Quantity','Status','Original Price','Discounted Price','Action'));
+                  tableHead(array('S.no','Name','Quantity','Status of stocks','Original Price','Discounted Price','Action'));
                   ?>
                </tr>
             </thead>
@@ -66,10 +66,14 @@ $products=get('products');
                   <td><?=$key+1?></td>
                   <td><?=$value->name?></td>
                   <td><?=$value->quantity?></td>
-                  <td><span class='notice <?=$value->status =='in stock' ? 'bg-success':'bg-danger' ?>  text-white'><?=strtoupper($value->status)?></span></td>
+                  <td><span class='notice <?=$value->status =='1' ? 'bg-success':'bg-danger' ?>  text-white'><?=strtoupper($value->status=='1' ? 'In stock' : 'out of stock')?></span></td>
                   <td><?=$value->original_price?></td>
                   <td><?=$value->discounted_price?></td>
-                  <td><a href="mod-products.php?id=<?=$value->id?>" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-pencil"></i></a></td>
+                  <td>
+                     <a href="mod-products.php?id=<?=$value->id?>" class="btn btn-primary btn-circle btn-sm waves-effect waves-light"><i class="ico fa fa-pencil"></i></a>
+                     <button type="button" class="btn btn-danger btn-circle btn-sm waves-effect waves-light" onclick=deleteData('ajax.php','<?=json_encode(array("id"=>$value->id,"action"=>"delete-product" ));?>','post')><i class="ico fa fa-trash"></i></button>
+
+                  </td>
                </tr>
                <?php } ?>
                

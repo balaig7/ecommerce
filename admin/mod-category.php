@@ -1,6 +1,7 @@
 <?php
-   include __DIR__."/loader.php";
    $id=$_GET['id'];
+   $title=empty($id) ? "ADD CATEGORY":"UPDATE CATEGORY";
+   include __DIR__."/loader.php";
    $category=find($id,'category');
    $formId=$action=empty($id) ? "create-category" : "update-category" ;
    $successMessage=empty($id) ? "New Category Created" : "Category Updated" ;

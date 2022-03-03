@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Blank Page - Ninja Admin Template</title>
+	<title><?=$title?> | E-ACCESSORIES</title>
 
 	<!-- Main Styles -->
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -37,18 +37,17 @@
 <body>
 <div class="main-menu">
 	<header class="header">
-		<a href="index.html" class="logo">NinjaTeam</a>
+		<a href="index.html" class="logo">E-ACCESSORIES</a>
 		<button type="button" class="button-close fa fa-times js__menu_close"></button>
 		<div class="user">
 			<a href="#" class="avatar"><img src="assets/img/avatar.png" alt=""><span class="status online"></span></a>
-			<h5 class="name"><a href="profile.html">Emily Stanley</a></h5>
-			<h5 class="position">Administrator</h5>
+			<h5 class="name"><a href="profile.html">Admin</a></h5>
+			<!-- <h5 class="position">Administrator</h5> -->
 			<!-- /.name -->
 			<div class="control-wrap js__drop_down">
 				<i class="fa fa-caret-down js__drop_down_button"></i>
 				<div class="control-list">
 					<div class="control-item"><a href="profile.html"><i class="fa fa-user"></i> Profile</a></div>
-					<div class="control-item"><a href="#"><i class="fa fa-gear"></i> Settings</a></div>
 					<div class="control-item"><a href="#"><i class="fa fa-sign-out"></i> Log out</a></div>
 				</div>
 				<!-- /.control-list -->
@@ -68,7 +67,7 @@
 					<a class="waves-effect" href="index.html"><i class="menu-icon fa fa-home"></i><span>Dashboard</span></a>
 				</li>
 				<li>
-					<a class="waves-effect" href="products.php"><i class="menu-icon fa fa-home"></i><span>Products</span></a>
+					<a class="waves-effect" href="products.php"><i class="menu-icon fa fa-shopping-basket"></i><span>Products</span></a>
 				</li>
 			</ul>
 			<!-- /.menu js__accordion -->

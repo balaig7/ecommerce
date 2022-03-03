@@ -70,7 +70,6 @@ switch ($action)
     break;
 
     case 'update-category':
-        // update($_POST['id'], 'category', $_POST, '');
         $id = $_POST['id'];
         $status = '0';
         if ($_POST['status'] == 'on')
@@ -188,12 +187,8 @@ switch ($action)
             if (!empty($_POST['child_category_id']))
             {
                 $childCategory = explode("-", $_POST['child_category_id']);
-                // if (!file_exists('../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . ''))
-                // {
                 createFolder('../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . ''); //create new folder inside assets
                 $productImagesPath = '../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . '/';
-
-                // }
                 $subCategoryId = $childCategory['0'];
             }
             else
@@ -221,12 +216,11 @@ switch ($action)
 
         if ($isproductImageUploaded && $isthumnailImageUploaded)
         {
-            $statusOfStocks = 'out of stock';
+            $statusOfStocks = '0';
             if ($_POST['status'] == '1')
             {
-                $statusOfStocks = 'in stock';
+                $statusOfStocks = '1';
             }
-
             $_POST['product_images_path'] = $productImagesPath;
             $_POST['thumnail_image_path'] = $thumnailImagePath;
             $_POST['product_images'] = implode(',', $_FILES['product_images']['name']);
@@ -234,69 +228,74 @@ switch ($action)
             $_POST['parent_category_id'] = $parentCategory['0'];
             $_POST['child_category_id'] = $subCategoryId;
             $_POST['status'] = $statusOfStocks;
-            $_POST['sku'] = generateSku(10, $getUid['0']->uid + 1);
+            $_POST['sku'] = generateSku(10, $getUid['0']->uid + 1);// generate random sku
 
             create('products', $_POST);
 
         }
     break;
     case 'update-product':
-        // printArray($_POST);
-        $isproductImageUploaded = $isthumnailImageUploaded = 0;
-        foreach ($_FILES['product_images']['name'] as $key => $value)
+        $id = $_POST['id'];
+        $oldData = find($id, 'products');
+        $explodeOldImage = explode(',', $oldData->product_images);
+        $thumbImage=$oldData->thumnail_image;
+        //if user post new image
+        if (!empty($_FILES['product_images']['name']))
         {
-            $imageName = $value;
-            $parentCategory = explode("-", $_POST['parent_category_id']);
-
-            $temp_name = $_FILES['product_images']['tmp_name'][$key];
-
-            createFolder('../assets/uploads/', 0777, true); //create new folder inside assets
-            createFolder('../assets/uploads/' . $parentCategory['1']);
-            if (!empty($_POST['child_category_id']))
+            $newImage = $_FILES['product_images']['name'];
+            foreach ($newImage as $key => $value)
             {
-                $childCategory = explode("-", $_POST['child_category_id']);
-                // if (!file_exists('../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . ''))
-                // {
-                createFolder('../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . ''); //create new folder inside assets
-                $productImagesPath = '../assets/uploads/' . $parentCategory['1'] . '/' . $childCategory['1'] . '/';
-
-                // }
-                $subCategoryId = $childCategory['0'];
-            }
-            else
-            {
-                $productImagesPath = '../assets/uploads/' . $parentCategory['1'] . '/';
-                $subCategoryId = $_POST['child_category_id'];
-
-            }
-
-            $target_file = $productImagesPath . basename($imageName);
-            if (move_uploaded_file($temp_name, $target_file))
-            {
-                $isproductImageUploaded .= 1;
+                $imageName = $value;//image names
+                $temp_name = $_FILES['product_images']['tmp_name'][$key];
+                $productImagesPath = $oldData->product_images_path;
+                $target_file = $productImagesPath . basename($imageName);
+                move_uploaded_file($temp_name, $target_file);//move images to mentioned path
             }
         }
-        $thumnailImage = $_FILES['thumnail_image']['name'];
-        createFolder('../assets/uploads/' . $parentCategory['1'] . '/thumnails'); //create new folder inside assets
-        $thumnailImagePath = '../assets/uploads/' . $parentCategory['1'] . '/thumnails/';
-        $thumb_temp_name = $_FILES['thumnail_image']['tmp_name'];
-        $thumb_target_file = $thumnailImagePath . basename($thumnailImage);
-        if (move_uploaded_file($thumb_temp_name, $thumb_target_file))
+        $statusOfStocks = '0';
+        if ($_POST['status'] == '1')
         {
-            $isthumnailImageUploaded .= 1;
+            $statusOfStocks = '1';
         }
-
-        if ($isproductImageUploaded && $isthumnailImageUploaded)
+        $mergeOldNewImages = array_filter(array_merge($explodeOldImage, $_FILES['product_images']['name']));//merge old and new images to array
+        $updatedProductImages = implode(",", $mergeOldNewImages);//store image names separated by commas
+        //if user upload new thumnail image
+        if (!empty($_FILES['thumnail_image']['name']))
         {
-            $_POST['product_images_path'] = $productImagesPath;
-            $_POST['thumnail_image_path'] = $thumnailImagePath;
-            $_POST['product_images'] = implode(',', $_FILES['product_images']['name']);
-            $_POST['thumnail_image'] = $thumnailImage;
-            $_POST['parent_category_id'] = $parentCategory['0'];
-            $_POST['child_category_id'] = $subCategoryId;
-            update($_POST['id'], 'products', $data);
-
+            @unlink($oldData->thumnail_image_path.$oldData->thumnail_image);
+            $thumnailImage = $_FILES['thumnail_image']['name'];
+            $thumnailImagePath = $oldData->thumnail_image_path;
+            $thumb_temp_name = $_FILES['thumnail_image']['tmp_name'];
+            $thumb_target_file = $thumnailImagePath . basename($thumnailImage);
+            move_uploaded_file($thumb_temp_name, $thumb_target_file);
+            $thumbImage = $thumnailImage;
         }
+        //final data update to table
+        $updateProductData=array(
+            'name' => $_POST['name'],
+            'description' => $_POST['description'],
+            'quantity' => $_POST['quantity'],
+            'status' => $statusOfStocks,
+            'original_price'=>$_POST['original_price'],
+            'discounted_price'=>$_POST['discounted_price'],
+            'product_images'=>$updatedProductImages,
+            'thumnail_image' => $thumbImage,
+            'success_message' =>'New Data Updated',
+            'redirect_url' => 'products.php'
+        );
+        update($id, 'products', $updateProductData);
+
+    break;
+    case 'delete-product':
+        $id = $_POST['id'];
+        $getProductdatas = find($id, 'products');
+        $productImages = $getProductdatas->product_images;
+        foreach (explode(",",$productImages) as $key => $value) {
+            @unlink($getProductdatas->product_images_path . $value); //delete product images from folder
+        }
+        @unlink($getProductdatas->thumnail_image_path . $getProductdatas->thumnail_image); //delete thumb image from folder
+
+    delete($id,'products');
     break;
     case 'delete-image':
         $id = $_POST['id'];

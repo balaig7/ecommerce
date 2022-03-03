@@ -1,4 +1,7 @@
 <?php
+$id=$_GET['id'];
+$title=empty($id) ? "ADD PRODUCT":"UPDATE PRODUCT";
+
 include __DIR__."/loader.php";
 $id=$_GET['id'];
 $category= get('category');
@@ -7,8 +10,8 @@ $formId=$action=empty($id) ? "create-product" : "update-product" ;
 $successMessage=empty($id) ? "New Product Created" : "Product Details Updated";
 $getmaxId=dbquery('select MAX(id) as uid from `products`');
 $subcategory = dbQuery("SELECT id,name from `sub_category` where parent_id='" . $product->parent_category_id . "'");
-
-
+$parentCategoryName=dbQuery("SELECT category.name FROM `category` INNER JOIN products on products.parent_category_id=category.id WHERE category.id='$product->parent_category_id'");
+$subCategoryName=dbQuery("SELECT sub_category.name FROM `sub_category` INNER JOIN products on products.child_category_id=sub_category.id WHERE sub_category.id='$product->child_category_id'");
 ?>
 <div class="main-content">
 <div class="row small-spacing">
@@ -24,32 +27,32 @@ $subcategory = dbQuery("SELECT id,name from `sub_category` where parent_id='" . 
                   <input type="hidden" name="action" value="<?=$action?>">
                   <input type="hidden" name="success_message" value="<?=$successMessage?>">
                   <input type="hidden" name="redirect_url" value="products.php">
-                  <?=empty(!$id) ? '<input type="hidden" name="id" value="'.$id.'">' : '' ?> 
+                  <?=!empty($id) ? '<input type="hidden" name="id" value="'.$id.'">' : '' ?> 
                </div>
+
                <div class="form-group cat">
                   <label>Category</label>
+                  <?php if(!empty($id)){ ?>
+                  <input type="text" class="form-control" disabled name="parent_category_id" value="<?=$parentCategoryName['0']->name?>">
+                  <?php }else{ ?>
                   <select class="form-control" name="parent_category_id" onchange="getSubCategory(this)">
                      <option value="">Select Category</option>
                      <?php foreach ($category as $key => $value) { ?>
-                     <option value="<?=$value->id."-".$value->name?>"<?=$value->id ==$product->parent_category_id ? 'selected' : '' ?>><?=$value->name?></option>
+                     <option value="<?=$value->id."-".$value->name?>"><?=$value->name?></option>
                      <?php } ?>
                   </select>
+                  <?php } ?>
                </div>
                <?php if($product->child_category_id>0){ ?>
                <div class="form-group sub-cat">
                 <label>Sub Category</label>
-                <select class="form-control" name="child_category_id">
-                <option value="">Select Category</option>
-                <?php foreach($subcategory as $value){ ?>
-                  <option value="<?=$value->id .'-' .$value->name?>" <?=$value->id ==$product->child_category_id ? 'selected' : '' ?> ><?=$value->name?></option>
-                <?php }?>
-                </select>
+               <input type="text" class="form-control" disabled name="parent_category_id" value="<?=$subCategoryName['0']->name?>">
                 </div>
                <?php }?>
   
                <label>Status of stock<span class="text-danger">*</span></label>
                <div class="switch primary">
-                  <input type="checkbox" id="switch-2" name="status" class="status-of-stock" value="<?=$product->status?>" <?=$product->status=='in stock' ? 'checked' : ''?>><label for="switch-2"></label>
+                  <input type="checkbox" id="switch-2" name="status" class="status-of-stock" value="<?=$product->status?>" <?=$product->status=='1' ? 'checked' : ''?>><label for="switch-2"></label>
                </div>
                <div class="form-group">
                   <label>Quantity <span class="text-danger">*</span></label>
@@ -77,6 +80,10 @@ $subcategory = dbQuery("SELECT id,name from `sub_category` where parent_id='" . 
                <div class="form-group">
                   <label>Thumnail Image<span class="text-danger">*</span></label>
                   <input type="file" <?=!empty($id)? '': 'required'?> name="thumnail_image" multiple  class="form-control" accept="image/*" >
+                  <?php if(!empty($id) && !empty($product->thumnail_image)){ ?>
+                  <img src="<?=$product->thumnail_image_path.$product->thumnail_image?>" width="80">
+                  <?php } ?>
+
                </div>
                <div class="form-group">
                   <label>Discounted price<span class="text-danger">*</span></label>
@@ -97,9 +104,8 @@ include __DIR__."/layouts/footer.php";
 ?>
 <script>
 function getSubCategory(id) {
-    var value = id.value.split("-");
+   var value = id.value.split("-");
 	var parent_id=value[0];
-
     $.ajax({
         url: "ajax.php",
         type: "post",
@@ -126,49 +132,66 @@ function getSubCategory(id) {
                 subcat = "<div class='form-group sub-cat'><input type='hidden' name='child_category_id' value=''>"
                 $(".cat").after(subcat)
             }
-
-
         }
-
     })
 }
 $(document).on('change','.status-of-stock',function(){
-          if($(this).is(":checked")){
-            $(this).val('1');
-          }else{
-            $(this).val('0');
-          }
-   })
-$(document).on('click','.delete-image',function(){
-         var image=$(this).data('image');
-         var id=$(this).data('id');
-         var action="delete-image"
-         $.ajax({
-            url:"ajax.php",
-            type:"post",
-            data:{
-               'image':image,
-               'id':id,
-               action:action
+   if($(this).is(":checked")){
+      $(this).val('1');
+   }else{
+      $(this).val('0');
+   }
+})
+$(document).on('click', '.delete-image', function() {
+    var image = $(this).data('image');
+    var id = $(this).data('id');
+    var action = "delete-image"
+    swal({
+        title: "Delete?",
+        text: "Are you sure you want to delete?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#f60e0e",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+    }, function(isConfirm){
+      if (isConfirm) {
+        $.ajax({
+            url: "ajax.php",
+            type: "post",
+            data: {
+                'image': image,
+                'id': id,
+                action: action
             },
             success: function(data) {
                 var response = $.parseJSON(data);
-            if (response.status == 'success') {
-                swal({
-                    title: response.message,
-                    text: '',
-                    type: 'success'
-                }, function () {
-                    window.location = response.redirectUrl;
-                });
-            } else {
-                Swal({ title: 'Error', text: '', type: 'error' })
+                if (response.status == 'success') {
+                    swal({
+                        title: response.message,
+                        text: '',
+                        type: 'success'
+                    }, function() {
+                        window.location = response.redirectUrl;
+                    });
+                } else {
+                    Swal({
+                        title: 'Error',
+                        text: '',
+                        type: 'error'
+                    })
+                }
             }
-            }
-         })
+        })
+      }else{
+             swal("Cancelled", "", "error");
+      }
    })
-   $(document).on('click','.update-product-data',function(){
-      var data=$('#update-product').serialize();
-      post(data,'ajax.php','post');
-   })
+
+})
+$(document).on('click','.update-product-data',function(){
+   postFiles($('#update-product'),'ajax.php','post');
+})
 </script>

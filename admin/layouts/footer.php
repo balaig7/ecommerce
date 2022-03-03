@@ -22,7 +22,7 @@
 	<script src="assets/js/jquery.dataTables.min.js"></script>
 	<script src="assets/js/dataTables.bootstrap.min.js"></script>
 	<script src="assets/js/dataTables.responsive.min.js"></script>
-			<script src="assets/js/jquery.validation.js"></script>
+	<script src="assets/js/jquery.validation.js"></script>
 
 	<!-- Must include this script FIRST -->
 			<script src="assets/js/custom.js"></script>
