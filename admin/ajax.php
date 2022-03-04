@@ -72,7 +72,7 @@ switch ($action)
     case 'update-category':
         $id = $_POST['id'];
         $status = '0';
-        if ($_POST['status'] == 'on')
+        if ($_POST['status'] == '1')
         {
             $status = '1';
         }

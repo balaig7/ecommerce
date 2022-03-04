@@ -1,3 +1,8 @@
+<?php 
+session_start();
+error_reporting(0);
+ini_set('display_errors', 0);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +22,7 @@
 
 	<!-- Waves Effect -->
 	<link rel="stylesheet" href="assets/css/waves.min.css">
+		<link rel="stylesheet" href="assets/css/sweetalert.css">
 
 </head>
 
@@ -29,9 +35,19 @@
 			<!-- /.title -->
 			<div class="frm-title">Login</div>
 			<!-- /.frm-title -->
-			<div class="frm-input"><input type="text" name="user_name" placeholder="User Name" class="frm-inp"><i class="fa fa-user frm-ico"></i></div>
+			<?php if(isset($_SESSION['error_message'])){ ?>
+			<div class="alert bg-danger text-white">
+				<?=$_SESSION['error_message']?>
+			</div>
+			<?php } ?>
+			<div class="frm-input">
+				<input type="text" name="user_name" placeholder="User Name" class="frm-inp"><i class="fa fa-user frm-ico"></i>
+			</div>
 			<!-- /.frm-input -->
-			<div class="frm-input"><input type="password" name="password" placeholder="Password" class="frm-inp"><i class="fa fa-lock frm-ico"></i></div>
+			<div class="frm-input">
+				<input type="password" name="password" placeholder="Password" class="frm-inp"><i class="fa fa-lock frm-ico"></i>
+			</div>
+
 			<!-- /.frm-input -->
 			
 			<!-- /.clearfix -->
@@ -41,9 +57,17 @@
 	</form>
 	<!-- /.frm-single -->
 </div><!--/#single-wrapper -->
+<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/modernizr.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/nprogress.js"></script>
+	<script src="assets/js/waves.min.js"></script>
+
+	<script src="assets/js/main.min.js"></script>
+	<script src="assets/js/sweetalert.min.js"></script>
 <?php
+
 require_once 'config/connection.php';
-session_start(); 
 if(isset($_POST['submit'])){
     $userName=mysqli_real_escape_string($conn,$_POST['user_name']);
     $password=mysqli_real_escape_string($conn,$_POST['password']);
@@ -52,24 +76,30 @@ if(isset($_POST['submit'])){
     if(mysqli_num_rows($result)>0){
         $userData=mysqli_fetch_assoc($result);
         if (password_verify($password, $userData['password'])) {
-            //  $_SESSION['userDetails']=$userData;
-             print_r($userData);
-             exit;
-        }
+				$_SESSION['current_user']=$userData;
+				if(isset($_SESSION['redirect_url'])){
+					$url=$_SESSION['redirect_url'];
+				}else {
+					$url="index.php";
+				}
+				unset($_SESSION['error_message'],$_SESSION['redirect_url']);
 
-       
+				if($_SESSION['current_user']['role']=='admin'){
+					header("Location:".$url."");
+				}else{
+					  session_destroy();
+				      echo "<script>alert('You have no permission to access this page')</script>";
+	
+				}
+        }else{
+			echo "<script>alert('Incorrect Password')</script>";
+		}
     }else{
-
+			echo "<script>alert('Incorrect Username')</script>";
     }
 }
 ?>
 	
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/modernizr.min.js"></script>
-	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/nprogress.js"></script>
-	<script src="assets/js/waves.min.js"></script>
 
-	<script src="assets/js/main.min.js"></script>
 </body>
 </html>

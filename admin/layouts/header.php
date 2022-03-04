@@ -4,10 +4,7 @@
 		<!-- <h1 class="page-title">Blank Page</h1> -->
 		<!-- /.page-title -->
 	</div>
-	<!-- /.pull-left -->
-	<div class="pull-right">
-		<a href="#" class="ico-item fa fa-power-off js__logout"></a>
-	</div>
+	
 	<!-- /.pull-right -->
 </div>
 <div id="wrapper">

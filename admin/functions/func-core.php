@@ -22,4 +22,18 @@ function generateSku($size,$uid) {
   
     return "SKU-".$randomString.$uid;
 }
+function isLogin(){
+ if(!isset($_SESSION['current_user'])){
+    $_SESSION['error_message']='Please login to continue!';
+    $_SESSION['redirect_url']=$_SERVER['REQUEST_URI'];
+    header("location:login.php");
+ }   
+}
+function isAdmin(Array $userdata){
+if($userdata['role']!='admin'){
+    unset($_SESSION['current_user']);
+    $_SESSION['error_message']='You have no permission to access this page';
+}
+
+}
 ?>
