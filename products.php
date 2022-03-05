@@ -1,6 +1,6 @@
 <?php
 include __DIR__."/loader.php";
-$product=find(2,'products');
+$product=find(1,'products');
 $category=dbQuery('SELECT * from `category` where name ="'.$_GET["category"].'"');
 $subCategories=dbQuery('SELECT * from `sub_category` where parent_id ="'.$category[0]->id.'"');
 
@@ -152,7 +152,7 @@ if (isset($_GET['pageno'])) {
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
-										<img src="assets/uploads/thumnails/<?=$value->thumnail_image?>" alt="">
+										<img src="<?=str_replace("../",'',$value->thumnail_image_path).$value->thumnail_image?>" alt="">
 										<div class="product-label">
 											<span class="sale">-30%</span>
 											<span class="new">NEW</span>

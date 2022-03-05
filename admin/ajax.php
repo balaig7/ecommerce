@@ -229,12 +229,13 @@ switch ($action)
             $_POST['child_category_id'] = $subCategoryId;
             $_POST['status'] = $statusOfStocks;
             $_POST['sku'] = generateSku(10, $getUid['0']->uid + 1);// generate random sku
-
+            $_POST['description']=htmlentities($_POST['description']);
             create('products', $_POST);
 
         }
     break;
     case 'update-product':
+        // printArray($_POST);
         $id = $_POST['id'];
         $oldData = find($id, 'products');
         $explodeOldImage = explode(',', $oldData->product_images);
@@ -273,7 +274,7 @@ switch ($action)
         //final data update to table
         $updateProductData=array(
             'name' => $_POST['name'],
-            'description' => $_POST['description'],
+            'description' => htmlentities($_POST['description']),
             'quantity' => $_POST['quantity'],
             'status' => $statusOfStocks,
             'original_price'=>$_POST['original_price'],
@@ -282,6 +283,7 @@ switch ($action)
             'thumnail_image' => $thumbImage,
             'success_message' =>'New Data Updated',
             'redirect_url' => 'products.php'
+
         );
         update($id, 'products', $updateProductData);
 

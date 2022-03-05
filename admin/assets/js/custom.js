@@ -26,6 +26,7 @@ function post(data, url, method) {
 
 function deleteData(url, data, method) {
     var form_data = new FormData();
+    console.log(form_data)
     $.each($.parseJSON(data), function (key, value) {
         form_data.append(key, value);
     });
@@ -73,8 +74,12 @@ function deleteData(url, data, method) {
 
 }
 
-function postFiles(formName, url, method) {
+function postFiles(formName, url, method,ckeditorData) {
+
     var formdata = new FormData($(formName)[0])
+    formdata.append('description', ckeditorData);
+
+
     $.ajax({
         type: method,
         url: url,
@@ -102,46 +107,5 @@ function postFiles(formName, url, method) {
         }
     })
 }
-$("#create-product").validate({
-    rules: {
-        name: {
-            required: true,
-        },
-        quantity: {
-            required: true,
-        },
-        description: {
-            required: true,
-        },
-        category_id: {
-            required: true,
-        },
-        product_images: {
-            required: true,
-        },
-        thumnail_images: {
-            required: true,
-        },
-        discounted_price: {
-            required: true,
-        },
-        original_price: {
-            required: true,
-        },
-    },
-    messages: {
-
-    },
-    submitHandler: function (form) {
-        // alert($(this));
-        postFiles(form, "ajax.php", "post");
-    }
-});
 
 
-// !function () { "use strict"; tinyMCE.baseURL = tinyMCE.baseURL+"/assets/plugin/tinymce", tinymce.init({ selector: "#tinymce", height: 500, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste code"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image", content_css: "assets/plugin/tinymce/content.min.css" }), tinymce.init({ selector: "h2.editable", inline: !0, toolbar: "undo redo", menubar: !1 }), tinymce.init({ selector: "div.editable", inline: !0, plugins: ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"], toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image" }) }(jQuery);
-
-// tinymce.init({
-//     selector: 'textarea',  // change this value according to your HTML
-//     plugins: 'advlist autolink link image lists charmap print preview'
-// });

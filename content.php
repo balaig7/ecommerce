@@ -1,6 +1,6 @@
 <?php
 include __DIR__."/loader.php";
-$product=find(2,'products');
+$product=find(3,'products');
 // echo "<pre>";
 // print_r($product);
 // print_r(explode(",",$product->images));
@@ -34,9 +34,9 @@ $product=find(2,'products');
 					<!-- Product main img -->
 					<div class="col-md-5 col-md-push-2">
 						<div id="product-main-img">
-							<?php foreach(explode(",",$product->images) as $value){ ?>
+							<?php foreach(explode(",",$product->product_images) as $value){ ?>
 							<div class="product-preview">
-								<img src="assets/uploads/<?=$value?>" alt="">
+								<img src="<?=str_replace("../","",$product->product_images_path).$value?>" alt="">
 							</div>
 							<?php } ?>
 
@@ -58,9 +58,9 @@ $product=find(2,'products');
 					<!-- Product thumb imgs -->
 					<div class="col-md-2  col-md-pull-5">
 						<div id="product-imgs">
-							<?php foreach(explode(",",$product->images) as $value){ ?>
+							<?php foreach(explode(",",$product->product_images) as $value){ ?>
 							<div class="product-preview">
-								<img src="assets/uploads/<?=$value?>" alt="">
+								<img src="<?=str_replace("../","",$product->product_images_path).$value?>" alt="">
 							</div>
 							<?php } ?>
 
@@ -97,8 +97,7 @@ $product=find(2,'products');
 								<h3 class="product-price">$<?=$product->discounted_price?> <del class="product-old-price"><?=$product->original_price?></del></h3>
 								<span class="product-available">In Stock</span>
 							</div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
+								<div><?=htmlspecialchars_decode($product->description)?></div>
 							<div class="product-options">
 								<label>
 									Size

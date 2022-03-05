@@ -28,7 +28,6 @@
 
 	<!-- Color Picker -->
 	<!-- <link rel="stylesheet" href="assets/color-switcher/color-switcher.min.css"> -->
-		<link rel="stylesheet" href="assets/plugin/tinymce/skins/lightgray/skin.min.css">
 	
 
 

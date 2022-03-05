@@ -13,6 +13,11 @@ $subcategory = dbQuery("SELECT id,name from `sub_category` where parent_id='" . 
 $parentCategoryName=dbQuery("SELECT category.name FROM `category` INNER JOIN products on products.parent_category_id=category.id WHERE category.id='$product->parent_category_id'");
 $subCategoryName=dbQuery("SELECT sub_category.name FROM `sub_category` INNER JOIN products on products.child_category_id=sub_category.id WHERE sub_category.id='$product->child_category_id'");
 ?>
+<style>
+   .ck-editor__editable {
+    min-height: 500px;
+}
+</style>
 <div class="main-content">
 <div class="row small-spacing">
    <div class="col-lg-12 col-xs-12">
@@ -60,7 +65,7 @@ $subCategoryName=dbQuery("SELECT sub_category.name FROM `sub_category` INNER JOI
                </div>
                <label>Description <span class="text-danger">*</span></label>
                <div class="box-content">
-                  <textarea id="tinymce" name="description" required><?=htmlspecialchars($product->description)?></textarea>
+                  <textarea id="description" name="description" required><?=htmlspecialchars_decode($product->description)?></textarea>
                </div>
                <div class="form-group">
                   <label>Product Images(Choose Multiple Images)<span class="text-danger">*</span></label>
@@ -191,7 +196,67 @@ $(document).on('click', '.delete-image', function() {
    })
 
 })
+let editor;
+
+ClassicEditor
+    .create(document.querySelector('#description'), {
+        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+    }).then(neweditor => {
+        editor=neweditor;
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+
 $(document).on('click','.update-product-data',function(){
-   postFiles($('#update-product'),'ajax.php','post');
+   const editorData = editor.getData();
+   postFiles($('#update-product'),'ajax.php','post',editorData);
 })
+$("#create-product").validate({
+    rules: {
+        name: {
+            required: true,
+        },
+        quantity: {
+            required: true,
+        },
+        description: {
+            required: true,
+        },
+        category_id: {
+            required: true,
+        },
+        product_images: {
+            required: true,
+        },
+        thumnail_images: {
+            required: true,
+        },
+        discounted_price: {
+            required: true,
+        },
+        original_price: {
+            required: true,
+        },
+    },
+    messages: {
+
+    },
+    submitHandler: function (form) {
+        const editorData = editor.getData();//get ckeditor data
+        postFiles(form, "ajax.php", "post",editorData);
+    }
+});
+   
+
+
 </script>
