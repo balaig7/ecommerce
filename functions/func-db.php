@@ -94,7 +94,7 @@ function dbQuery($query){
     return $data;
 }
 
-function getTotalData($table){
+function getTotalData($query){
      global $conn;
     $query="SELECT * from `".$table."`";
     $result=mysqli_query($conn,$query);

@@ -3,218 +3,143 @@ include __DIR__."/loader.php";
 $product=find(1,'products');
 $category=dbQuery('SELECT * from `category` where name ="'.$_GET["category"].'"');
 $subCategories=dbQuery('SELECT * from `sub_category` where parent_id ="'.$category[0]->id.'"');
-
-if (isset($_GET['pageno'])) {
-            $pageno = $_GET['pageno'];
-        } else {
-            $pageno = 1;
-        }
-        $no_of_records_per_page = 6;
-        $offset = ($pageno-1) * $no_of_records_per_page;
-
-        // Check connection
-       
-
-        
-        $total_rows = getTotalData('products');
-        $total_pages = ceil($total_rows / $no_of_records_per_page);
-
-        $sql = "SELECT * FROM `products` LIMIT $offset, $no_of_records_per_page";
-        $res_data = mysqli_query($conn,$sql);
-        while($row = mysqli_fetch_array($res_data)){
-            //here goes the data
-        }
-
-
 ?>
+<style>
+li.active>a{
+	color:#fff;
+}
+</style>
 <div class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<!-- ASIDE -->
-					<div id="aside" class="col-md-3">
-						
-
-						<!-- aside Widget -->
-                        <div class="aside">
-							<h3 class="aside-title">Brand</h3>
-							<div class="checkbox-filter">
-								<?php foreach($subCategories as $value){ ?>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
-									<label for="brand-1">
-										<span></span>
-										<?=$value->name?>
-										<small>(578)</small>
-									</label>
-								</div>
-								<?php } ?>
-								<!-- <div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										LG
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										SONY
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										SAMSUNG
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										LG
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										SONY
-										<small>(755)</small>
-									</label>
-								</div> -->
-							</div>
-						</div>
-						<div class="aside">
-							<h3 class="aside-title">Price</h3>
-							<div class="price-filter">
-								<div id="price-slider"></div>
-								<div class="input-number price-min">
-									<input id="price-min" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
-								</div>
-								<span>-</span>
-								<div class="input-number price-max">
-									<input id="price-max" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
-								</div>
-							</div>
-						</div>
-						<!-- /aside Widget -->
-
-						<!-- aside Widget -->
-						
-						<!-- /aside Widget -->
-
-						<!-- aside Widget -->
-						
-						<!-- /aside Widget -->
-					</div>
-					<!-- /ASIDE -->
-
-					<!-- STORE -->
-					<div id="store" class="col-md-9">
-						
-						<!-- store products -->
-						<div class="row">
-							<!-- product -->
-                        <?php 
-                        if (isset($_GET['pageno'])) {
-            $pageno = $_GET['pageno'];
-        } else {
-            $pageno = 1;
-        }
-        $no_of_records_per_page = 6;
-        $offset = ($pageno-1) * $no_of_records_per_page;
-
-        // Check connection
-       
-
-        
-        $total_rows = getTotalData('products');
-        $total_pages = ceil($total_rows / $no_of_records_per_page);
-
-        $sql = dbQuery("SELECT * FROM `products` LIMIT $offset, $no_of_records_per_page");
-        
-                        
-                        foreach($sql as $value){
-                            
-                        ?>
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="<?=str_replace("../",'',$value->thumnail_image_path).$value->thumnail_image?>" alt="">
-										<div class="product-label">
-											<span class="sale">-30%</span>
-											<span class="new">NEW</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<!-- <p class="product-category">Category</p> -->
-										<h3 class="product-name"><a href="#"><?=$value->name?></a></h3>
-										<h4 class="product-price">$<?=$value->discounted_price	?><del class="product-old-price">$<?=$value->original_price	?></del></h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-                            <?php } ?>
-
-						
-							
-						</div>
-						<!-- /store products -->
-
-						<!-- store bottom filter -->
-						<div class="store-filter clearfix">
-							<span class="store-qty">Showing 20-100 products</span>
-							<ul class="store-pagination">
-								<!-- <li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li> -->
-                                <?php for($i=1; $i<=$total_pages;$i++){?>
-                                <li <?=empty($_GET['pageno']) ? 'class="active"' : ''?>>
-                                    <a href="?pageno=<?=$i?>"><?=$i?></a>
-                                </li>
-                                <?php } ?>
-       
-        
-        
-                                
-							</ul>
-						</div>
-						<!-- /store bottom filter -->
-					</div>
-					<!-- /STORE -->
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
+   <div class="container">
+      <div class="row">
+         <div id="aside" class="col-md-3">
+            <div class="aside sub-categories"></div>
+            <div class="aside">
+               <h3 class="aside-title">Price</h3>
+               <div class="price-filter">
+                  <div id="price-slider"></div>
+                  <div class="input-number price-min">
+                     <input id="price-min" type="number">
+                     <span class="qty-up">+</span>
+                     <span class="qty-down">-</span>
+                  </div>
+                  <span>-</span>
+                  <div class="input-number price-max">
+                     <input id="price-max" type="number">
+                     <span class="qty-up">+</span>
+                     <span class="qty-down">-</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="store" class="col-md-9">
+            <div class="row load-products">
+               <!-- load products -->
+            </div>
+            <div class="store-filter clearfix">
+               <span class="store-qty">Showing 20-100 products</span>
+               <ul class="store-pagination">
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <?php
 include __DIR__."/layouts/footer.php";
 ?>
+<script>
+var parent_cat_id="<?=$category[0]->id?>"
+loadData(parent_cat_id)
+$(document).on("click","li.pages",function(){
+	$("li.pages").removeClass('active')
+	$(this).addClass('active')	
+})							
+function loadData(parentCategory,subcategory=0,page=''){
+	$.ajax({
+		url:"view-data.php",
+		type:"post",
+		data:{
+			parent_cat:parentCategory,
+			sub_cat:subcategory,
+			page:page
+		},
+		success:function(data){
+			var parsedData=JSON.parse(data);
+			var subCat=productsData=pages='';
+			$("ul.store-pagination").empty();
+			$(".load-products").empty();
+
+			//load sub categories
+			if(parsedData.sub_categories.length>0){
+				subCat+='<h3 class="aside-title">Categories</h3>'
+                    subCat+='<div class="checkbox-filter">'
+						$.each(parsedData.sub_categories,function(index,categories){
+							 subCat+='<div class="input-checkbox">'
+								subCat+='<input type="checkbox" id="category-'+index+'" value='+categories.id+'>'
+								  subCat+='<label for="category-'+index+'">'
+									subCat+='<span></span>'
+										subCat+=categories.name
+									 subCat+='<small>('+categories.total+')</small>'
+								  subCat+='</label>'
+							 subCat+='</div>'
+						});
+				subCat+='</div>'
+				if($(".sub-categories").html()==''){
+					$('.sub-categories').append(subCat);
+
+				}
+
+			}
+			//load products
+			if(parsedData.products.length>0){
+				$("span.store-qty").text(parsedData.showing_limits)
+
+				$.each(parsedData.products,function(index,products){
+					productsData+='<div class="col-md-4 col-xs-6">'
+					productsData+='<div class="product">'
+						productsData+='<div class="product-img">'
+							productsData+='<img src="'+products.thumnail_image_path+''+products.thumnail_image+'" alt="">'
+							productsData+='<div class="product-label">'
+								productsData+='<span class="sale">-30%</span>'
+								productsData+='<span class="new">NEW</span>'
+							productsData+='</div>'
+						productsData+='</div>'
+						productsData+='<div class="product-body">'
+							productsData+='<h3 class="product-name"><a href="#">'+products.name+'</a></h3>'
+							productsData+='<h4 class="product-price">$'+products.discounted_price+'<del class="product-old-price">$'+products.original_price+'</del></h4>'
+							productsData+='<div class="product-rating">'
+								productsData+='<i class="fa fa-star"></i>'
+								productsData+='<i class="fa fa-star"></i>'
+								productsData+='<i class="fa fa-star"></i>'
+								productsData+='<i class="fa fa-star"></i>'
+								productsData+='<i class="fa fa-star"></i>'
+							productsData+='</div>'
+							productsData+='<div class="product-btns">'
+								productsData+='<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>'
+								productsData+='<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>'
+								productsData+='<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>'
+							productsData+='</div>'
+						productsData+='</div>'
+						productsData+='<div class="add-to-cart">'
+							productsData+='<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>'
+						productsData+='</div>'
+					productsData+='</div>'
+				productsData+='</div>'
+				});
+				var active=pageData=""
+				// pages+='<li><a href="#"><i class="fa fa-angle-right"></i></a></li>'
+				$.each(parsedData.total_page,function(index,pageNo){
+					pages+='<li class="pages '+pageNo.split("_")[1]+'"><a href="javascript:void(0)" onclick=loadData('+parent_cat_id+',"",'+(index)+')>'+pageNo.split("_")[0]+'</a></li>'
+				});
+				$('.load-products').append(productsData);
+				$('ul.store-pagination').append(pages);
+				}else{
+				productsData='<h3 class="text-danger">SORRY NO PRODUCTS ARE AVAILABLE IN THIS CATEGORY<h2>'
+				$('.load-products').append(productsData);
+			}
+		}
+	})
+}
+
+</script>
