@@ -13,6 +13,7 @@ li.active>a{
    <div class="container">
       <div class="row">
          <div id="aside" class="col-md-3">
+			 <!-- load sub categories -->
             <div class="aside sub-categories"></div>
             <div class="aside">
                <h3 class="aside-title">Price</h3>
@@ -37,7 +38,7 @@ li.active>a{
                <!-- load products -->
             </div>
             <div class="store-filter clearfix">
-               <span class="store-qty">Showing 20-100 products</span>
+               <span class="store-qty"></span>
                <ul class="store-pagination">
                </ul>
             </div>
@@ -128,14 +129,13 @@ function loadData(parentCategory,subcategory=0,page=''){
 				productsData+='</div>'
 				});
 				var active=pageData=""
-				// pages+='<li><a href="#"><i class="fa fa-angle-right"></i></a></li>'
 				$.each(parsedData.total_page,function(index,pageNo){
-					pages+='<li class="pages '+pageNo.split("_")[1]+'"><a href="javascript:void(0)" onclick=loadData('+parent_cat_id+',"",'+(index)+')>'+pageNo.split("_")[0]+'</a></li>'
+					pages+='<li class="pages '+pageNo.split("_")[1]+'"><a href="javascript:void(0)" onclick=loadData('+parent_cat_id+',"",'+(pageNo.split("_")[2])+')>'+pageNo.split("_")[0]+'</a></li>'
 				});
 				$('.load-products').append(productsData);
 				$('ul.store-pagination').append(pages);
 				}else{
-				productsData='<h3 class="text-danger">SORRY NO PRODUCTS ARE AVAILABLE IN THIS CATEGORY<h2>'
+				productsData='<h3 class="text-danger" style="margin-top: 20%;">SORRY NO PRODUCTS ARE AVAILABLE IN THIS CATEGORY<h2>'
 				$('.load-products').append(productsData);
 			}
 		}

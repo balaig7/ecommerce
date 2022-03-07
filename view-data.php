@@ -4,7 +4,7 @@ require_once "functions/func-db.php";
 $productData['products'] = $productData['sub_categories'] = $productData['total_page'] = array();
 $parentCategoryid = $_POST['parent_cat'];
 $subCategoryid = $_POST['sub_cat'];
-$pageLimit = 6; // Number of entries to show in a page.
+$pageLimit = 3; // Number of products to show in a page.
 if ($subCategoryid > 0)
 {
     $where = "child_category_id=" . $subCategoryid . "";
@@ -23,19 +23,18 @@ if ($isChildrens->is_childrens == '1')
 $getProductcount = dbQuery("SELECT count('id') as total_records from `products` where " . $where . " and status='1' ");
 
 $totalRecord = $getProductcount[0]->total_records; //get total count
-$totalPages = ceil($totalRecord / $pageLimit);
-$previousPage = $nextPage = '';
+$totalPages = ceil($totalRecord / $pageLimit);//get total pages
 if (!empty($_POST["page"]))
 {
-    $page = $_POST["page"];
+    $page = $_POST["page"];//get current page no
 }
 else
 {
-    $page = 1;
+    $page = 1; //default 1
 }
 $startFrom = ($page - 1) * $pageLimit;
 $productData['products'] = dbQuery("SELECT id,name,thumnail_image_path,thumnail_image,original_price,discounted_price from `products` where " . $where . " and status='1' LIMIT " . $startFrom . "," . $pageLimit . " ");
-// $productData['showing_limits']="SHOWING ". $startFrom."-".$pageLimit. " PRODUCTS";
+$productData['showing_limits']="SHOWING " . $startFrom ."-".($startFrom+$pageLimit)." OF ".($totalRecord+1) ." PRODUCTS";
 foreach ($productData['products'] as $key => $value)
 {
     $value->thumnail_image_path = str_replace("../", "", $value->thumnail_image_path);
@@ -50,34 +49,35 @@ if ($difference <= 5)
 $end_loop = $start_loop + 4;
 if ($page > 1)
 {
-    $productData['total_page'][1] = "FIRST_";
-    $productData['total_page'][$page - 1] = "<i class='fa fa-angle-left'></i>_";
-    //  echo "<a href='cricketers_list.php?page=1'>First</a>";
-    //  echo "<a href='cricketers_list.php?page=".($page - 1)."'><<</a>";
-    
+    // $productData['total_page'][1] = "FIRST_";//first page
+
+    $productData['total_page'][1] = "<i class='fa fa-angle-left'></i>__".($page-1);//previous page
 }
 for ($i = $start_loop;$i <= $end_loop;$i++)
 {
-    //  echo "<a href='cricketers_list.php?page=".$i."'>".$i."</a>";
     if ($page == $i)
     {
-        $activePage = 'active';
+        $activePage = 'active';//current active page
     }
     else
     {
         $activePage = '';
     }
-    $productData['total_page'][$i] = $i . "_" . $activePage;
+    
+    $productData['total_page'][$i] = $i . "_" . $activePage."_".$i;//show 5 page range per pages 
 
 }
 if ($page <= $end_loop)
 {
-    $productData['total_page'][] = "<i class='fa fa-angle-right'></i>_";
-    $productData['total_page'][$totalPages] = "LAST_";
-    //  echo "<a href='cricketers_list.php?page=".($page + 1)."'>>></a>";
-    //  echo "<a href='cricketers_list.php?page=".$totalPages."'>Last</a>";
     
+    $productData['total_page'][] = "<i class='fa fa-angle-right'></i>__".($page+1);//next page
+    // $productData['total_page'][$totalPages] = "LAST__".$totalPages;//last page
+}
+if($page==$totalPages){
+
+        $productData['total_page'][$totalPages]=$totalPages."_active_".$totalPages;//final page
 }
 echo json_encode($productData);
+exit;
 
 ?>
