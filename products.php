@@ -52,11 +52,9 @@ include __DIR__."/layouts/footer.php";
 <script>
 var parent_cat_id="<?=$category[0]->id?>"
 loadData(parent_cat_id)
-$(document).on("click","li.pages",function(){
-	$("li.pages").removeClass('active')
-	$(this).addClass('active')	
-})							
-function loadData(parentCategory,subcategory=0,page=''){
+
+
+function loadData(parentCategory,subcategory='',page=''){
 	$.ajax({
 		url:"view-data.php",
 		type:"post",
@@ -77,7 +75,7 @@ function loadData(parentCategory,subcategory=0,page=''){
                     subCat+='<div class="checkbox-filter">'
 						$.each(parsedData.sub_categories,function(index,categories){
 							 subCat+='<div class="input-checkbox">'
-								subCat+='<input type="checkbox" id="category-'+index+'" value='+categories.id+'>'
+								subCat+='<input type="checkbox" id="category-'+index+'" value='+categories.id+' class="brands" name="sub_categories">'
 								  subCat+='<label for="category-'+index+'">'
 									subCat+='<span></span>'
 										subCat+=categories.name
@@ -93,6 +91,7 @@ function loadData(parentCategory,subcategory=0,page=''){
 
 			}
 			//load products
+			console.log(parsedData.products.length);
 			if(parsedData.products.length>0){
 				$("span.store-qty").text(parsedData.showing_limits)
 
@@ -130,16 +129,24 @@ function loadData(parentCategory,subcategory=0,page=''){
 				});
 				var active=pageData=""
 				$.each(parsedData.total_page,function(index,pageNo){
-					pages+='<li class="pages '+pageNo.split("_")[1]+'"><a href="javascript:void(0)" onclick=loadData('+parent_cat_id+',"",'+(pageNo.split("_")[2])+')>'+pageNo.split("_")[0]+'</a></li>'
+					pages+='<li class="pages '+pageNo.split("_")[1]+'"><a href="javascript:void(0)" onclick=loadData('+parent_cat_id+','+$('input[name="sub_categories"]:checked').val()+','+(pageNo.split("_")[2])+')>'+pageNo.split("_")[0]+'</a></li>'
 				});
 				$('.load-products').append(productsData);
 				$('ul.store-pagination').append(pages);
 				}else{
+					$("span.store-qty").text('')
 				productsData='<h3 class="text-danger" style="margin-top: 20%;">SORRY NO PRODUCTS ARE AVAILABLE IN THIS CATEGORY<h2>'
 				$('.load-products').append(productsData);
 			}
 		}
 	})
 }
+$(document).on("change",'.brands',function(){
+	$(".brands").prop('checked', false);
+    $(this).prop('checked', true);
+	var value=$(this).val()
+	loadData(parent_cat_id,value,page='')
+})
+
 
 </script>
