@@ -1,30 +1,8 @@
 <?php
 include __DIR__."/loader.php";
-$product=find(3,'products');
-// echo "<pre>";
-// print_r($product);
-// print_r(explode(",",$product->images));
+$product=find($_GET['id'],'products');
 ?>
-		<!-- BREADCRUMB -->
-		<div id="breadcrumb" class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<h3 class="breadcrumb-header">Regular Page</h3>
-						<ul class="breadcrumb-tree">
-							<li><a href="#">Home</a></li>
-							<li class="active">Blank</li>
-						</ul>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /BREADCRUMB -->
-
+		
 		<!-- SECTION -->
 		<div class="section">
 			<!-- container -->
@@ -39,23 +17,8 @@ $product=find(3,'products');
 								<img src="<?=str_replace("../","",$product->product_images_path).$value?>" alt="">
 							</div>
 							<?php } ?>
-
-							<!-- <div class="product-preview">
-								<img src="./img/product03.png" alt="">
-							</div>
-
-							<div class="product-preview">
-								<img src="./img/product06.png" alt="">
-							</div>
-
-							<div class="product-preview">
-								<img src="./img/product08.png" alt="">
-							</div> -->
 						</div>
 					</div>
-					<!-- /Product main img -->
-
-					<!-- Product thumb imgs -->
 					<div class="col-md-2  col-md-pull-5">
 						<div id="product-imgs">
 							<?php foreach(explode(",",$product->product_images) as $value){ ?>
@@ -63,23 +26,8 @@ $product=find(3,'products');
 								<img src="<?=str_replace("../","",$product->product_images_path).$value?>" alt="">
 							</div>
 							<?php } ?>
-
-							<!-- <div class="product-preview">
-								<img src="./img/product03.png" alt="">
-							</div>
-
-							<div class="product-preview">
-								<img src="./img/product06.png" alt="">
-							</div>
-
-							<div class="product-preview">
-								<img src="./img/product08.png" alt="">
-							</div> -->
 						</div>
 					</div>
-					<!-- /Product thumb imgs -->
-
-					<!-- Product details -->
 					<div class="col-md-5">
 						<div class="product-details">
 							<h2 class="product-name"><?=$product->name?></h2>

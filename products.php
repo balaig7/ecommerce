@@ -96,6 +96,7 @@ function loadData(parentCategory,subcategory='',page=''){
 				$("span.store-qty").text(parsedData.showing_limits)
 
 				$.each(parsedData.products,function(index,products){
+					productsData+="<a href='content.php?id="+products.id+"'>"
 					productsData+='<div class="col-md-4 col-xs-6">'
 					productsData+='<div class="product">'
 						productsData+='<div class="product-img">'
@@ -126,6 +127,7 @@ function loadData(parentCategory,subcategory='',page=''){
 						productsData+='</div>'
 					productsData+='</div>'
 				productsData+='</div>'
+				productsData+='</a>'
 				});
 				var active=pageData=""
 				$.each(parsedData.total_page,function(index,pageNo){
