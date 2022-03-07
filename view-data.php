@@ -4,7 +4,7 @@ require_once "functions/func-db.php";
 $productData['products'] = $productData['sub_categories'] = $productData['total_page'] = array();
 $parentCategoryid = $_POST['parent_cat'];
 $subCategoryid = $_POST['sub_cat'];
-$pageLimit = 3; // Number of products to show in a page.
+$pageLimit = 6; // Number of products to show in a page.
 if ($subCategoryid > 0)
 {
     $where = "child_category_id=" . $subCategoryid . "";
