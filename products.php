@@ -11,11 +11,13 @@ li.active>a{
 </style>
 <div class="section">
    <div class="container">
+	            <input type="hidden" id="sess_status" value=<?=$isUserActive?>>
+
       <div class="row">
          <div id="aside" class="col-md-3">
 			 <!-- load sub categories -->
             <div class="aside sub-categories"></div>
-            <div class="aside">
+            <!-- <div class="aside">
                <h3 class="aside-title">Price</h3>
                <div class="price-filter">
                   <div id="price-slider"></div>
@@ -31,7 +33,7 @@ li.active>a{
                      <span class="qty-down">-</span>
                   </div>
                </div>
-            </div>
+            </div> -->
          </div>
          <div id="store" class="col-md-9">
             <div class="row load-products">
@@ -52,7 +54,7 @@ include __DIR__."/layouts/footer.php";
 <script>
 var parent_cat_id="<?=$category[0]->id?>"
 loadData(parent_cat_id)
-
+var sessionStatus=$("#sess_status").val();
 
 function loadData(parentCategory,subcategory='',page=''){
 	$.ajax({
@@ -86,17 +88,15 @@ function loadData(parentCategory,subcategory='',page=''){
 				subCat+='</div>'
 				if($(".sub-categories").html()==''){
 					$('.sub-categories').append(subCat);
-
 				}
-
 			}
 			//load products
-			console.log(parsedData.products.length);
 			if(parsedData.products.length>0){
 				$("span.store-qty").text(parsedData.showing_limits)
 
 				$.each(parsedData.products,function(index,products){
 					productsData+="<a href='content.php?id="+products.id+"'>"
+					productsData+="<form>"
 					productsData+='<div class="col-md-4 col-xs-6">'
 					productsData+='<div class="product">'
 						productsData+='<div class="product-img">'
@@ -116,18 +116,21 @@ function loadData(parentCategory,subcategory='',page=''){
 								productsData+='<i class="fa fa-star"></i>'
 								productsData+='<i class="fa fa-star"></i>'
 							productsData+='</div>'
+							if(sessionStatus==1){
 							productsData+='<div class="product-btns">'
 								productsData+='<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>'
-								productsData+='<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>'
-								productsData+='<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>'
 							productsData+='</div>'
+							}
 						productsData+='</div>'
 						productsData+='<div class="add-to-cart">'
 							productsData+='<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>'
 						productsData+='</div>'
 					productsData+='</div>'
 				productsData+='</div>'
+				productsData+="</form>"
+
 				productsData+='</a>'
+
 				});
 				var active=pageData=""
 				$.each(parsedData.total_page,function(index,pageNo){

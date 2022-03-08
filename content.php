@@ -2,14 +2,9 @@
 include __DIR__."/loader.php";
 $product=find($_GET['id'],'products');
 ?>
-		
-		<!-- SECTION -->
 		<div class="section">
-			<!-- container -->
 			<div class="container">
-				<!-- row -->
 				<div class="row">
-					<!-- Product main img -->
 					<div class="col-md-5 col-md-push-2">
 						<div id="product-main-img">
 							<?php foreach(explode(",",$product->product_images) as $value){ ?>
@@ -94,9 +89,6 @@ $product=find($_GET['id'],'products');
 
 						</div>
 					</div>
-					<!-- /Product details -->
-
-					<!-- Product tab -->
 					<div class="col-md-12">
 						<div id="product-tab">
 							<!-- product tab nav -->
@@ -105,11 +97,7 @@ $product=find($_GET['id'],'products');
 								<li><a data-toggle="tab" href="#tab2">Details</a></li>
 								<li><a data-toggle="tab" href="#tab3">Reviews (3)</a></li>
 							</ul>
-							<!-- /product tab nav -->
-
-							<!-- product tab content -->
 							<div class="tab-content">
-								<!-- tab1  -->
 								<div id="tab1" class="tab-pane fade in active">
 									<div class="row">
 										<div class="col-md-12">
@@ -117,9 +105,6 @@ $product=find($_GET['id'],'products');
 										</div>
 									</div>
 								</div>
-								<!-- /tab1  -->
-
-								<!-- tab2  -->
 								<div id="tab2" class="tab-pane fade in">
 									<div class="row">
 										<div class="col-md-12">
@@ -127,12 +112,8 @@ $product=find($_GET['id'],'products');
 										</div>
 									</div>
 								</div>
-								<!-- /tab2  -->
-
-								<!-- tab3  -->
 								<div id="tab3" class="tab-pane fade in">
 									<div class="row">
-										<!-- Rating -->
 										<div class="col-md-3">
 											<div id="rating">
 												<div class="rating-avg">
@@ -214,9 +195,6 @@ $product=find($_GET['id'],'products');
 												</ul>
 											</div>
 										</div>
-										<!-- /Rating -->
-
-										<!-- Reviews -->
 										<div class="col-md-6">
 											<div id="reviews">
 												<ul class="reviews">
@@ -278,9 +256,6 @@ $product=find($_GET['id'],'products');
 												</ul>
 											</div>
 										</div>
-										<!-- /Reviews -->
-
-										<!-- Review Form -->
 										<div class="col-md-3">
 											<div id="review-form">
 												<form class="review-form">
@@ -301,21 +276,14 @@ $product=find($_GET['id'],'products');
 												</form>
 											</div>
 										</div>
-										<!-- /Review Form -->
 									</div>
 								</div>
-								<!-- /tab3  -->
 							</div>
-							<!-- /product tab content  -->
 						</div>
 					</div>
-					<!-- /product tab -->
 				</div>
-				<!-- /row -->
 			</div>
-			<!-- /container -->
 		</div>
-		<!-- /SECTION -->
 <?php
 include __DIR__."/layouts/footer.php";
 ?>

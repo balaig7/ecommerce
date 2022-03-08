@@ -26,14 +26,6 @@
 
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
-
- 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
- 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
- 		<!--[if lt IE 9]>
- 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
- 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
- 		<![endif]-->
-
     </head>
 	<body>
 		<!-- HEADER -->
@@ -41,14 +33,16 @@
 			<!-- TOP HEADER -->
 			<div id="top-header">
 				<div class="container">
-					<ul class="header-links pull-left">
+					<!-- <ul class="header-links pull-left">
 						<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
 						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
 						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
-					</ul>
+					</ul> -->
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+						<!-- <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li> -->
+						<li>
+							<?=$isUserActive ? '<a href="#"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="login.php"><i class="fa fa-user-o"></i>Login</a>' ?>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -64,7 +58,8 @@
 						<div class="col-md-3">
 							<div class="header-logo">
 								<a href="#" class="logo">
-									<img src="./img/logo.png" alt="">
+									<!-- <img src="./img/logo.png" alt=""> -->
+									<h2 style="color:#fff">E-ACCESSORIES</h2>
 								</a>
 							</div>
 						</div>
