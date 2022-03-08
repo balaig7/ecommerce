@@ -12,7 +12,6 @@ function tableHead(Array $headings){
 
 function tableData(Array $tableData){
     $tabledata='';
-
     foreach ($tableData as $key => $value) {
        $tabledata .="<td>".$value."</td>";
     }
