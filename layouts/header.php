@@ -26,6 +26,8 @@
 
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
+		<link rel="stylesheet" href="assets/css/sweetalert.css">
+
     </head>
 	<body>
 		<!-- HEADER -->
@@ -96,10 +98,11 @@
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<a  href="cart.php" aria-expanded="true">
+									<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="cart.php" aria-expanded="true"> -->
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
-										<div class="qty">3</div>
+										<div class="qty"><?=empty($_SESSION['cart']['products']) ? '0' : count($_SESSION['cart']['products'])?></div>
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">

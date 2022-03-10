@@ -8,11 +8,14 @@ $subCategories=dbQuery('SELECT * from `sub_category` where parent_id ="'.$catego
 li.active>a{
 	color:#fff;
 }
+.swal2-styled.swal2-confirm{
+
+	background-color:#D10024!important;
+}
 </style>
 <div class="section">
    <div class="container">
-	            <input type="hidden" id="sess_status" value=<?=$isUserActive?>>
-
+	<input type="hidden" id="sess_status" value=<?=$isUserActive?>>
       <div class="row">
          <div id="aside" class="col-md-3">
 			 <!-- load sub categories -->
@@ -96,7 +99,10 @@ function loadData(parentCategory,subcategory='',page=''){
 
 				$.each(parsedData.products,function(index,products){
 					productsData+="<a href='content.php?id="+products.id+"'>"
-					productsData+="<form>"
+					productsData+="<form  method='post'>"
+					productsData+='<input type="hidden" name="product_id" value='+products.id+'>'
+					productsData+='<input type="hidden" name="mode" value="add-to-cart">'
+					productsData+='<input type="hidden" name="quantity" value="1">'
 					productsData+='<div class="col-md-4 col-xs-6">'
 					productsData+='<div class="product">'
 						productsData+='<div class="product-img">'
@@ -123,12 +129,11 @@ function loadData(parentCategory,subcategory='',page=''){
 							}
 						productsData+='</div>'
 						productsData+='<div class="add-to-cart">'
-							productsData+='<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>'
+							productsData+='<button class="add-to-cart-btn" type="button" data-id="'+products.id+'"><i class="fa fa-shopping-cart"></i> add to cart</button>'
 						productsData+='</div>'
 					productsData+='</div>'
 				productsData+='</div>'
 				productsData+="</form>"
-
 				productsData+='</a>'
 
 				});
@@ -151,6 +156,37 @@ $(document).on("change",'.brands',function(){
     $(this).prop('checked', true);
 	var value=$(this).val()
 	loadData(parent_cat_id,value,page='')
+})
+
+$(document).on("click",".add-to-cart-btn",function(){
+	$.ajax({
+		url:"cart-core.php",
+		type:"post",
+		data:$(this.form).serialize(),
+		success:function(data){
+			var response = $.parseJSON(data);
+			if(response.status=='success'){
+				Swal.fire({
+                   title: response.message,
+                    text:'',
+                    icon:'success'
+				}).then(function (result) {
+     				if (result.value) {
+						location.reload();
+     				}
+   				});
+
+		
+			}else{
+				Swal.fire(
+                    response.message,
+                    '',
+                    'error'
+                )
+			}
+
+		}
+	})
 })
 
 

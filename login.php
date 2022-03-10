@@ -1,8 +1,8 @@
 <?php 
 session_start();
-// error_reporting(0);
-// ini_set('display_errors', 0);
-$_SESSION['active']=false;
+require_once("settings.php");
+$_SESSION['current_user']=array();
+
 
 ?>
 <!DOCTYPE html>
@@ -96,7 +96,9 @@ if(isset($_POST['submit'])){
 				if($_SESSION['current_user']['role']=='user'){
                     $_SESSION['active']=true;
 					header("Location:".$url."");
-				}
+				}else{
+                    session_destroy();
+                }
         }else{
 			echo "<script>alert('Incorrect Password')</script>";
 		}

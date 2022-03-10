@@ -62,7 +62,7 @@ function get($table){
 
 function find($id,$table){
     global $conn;
-    $query="SELECT * from `".$table."` where id=".$id." LIMIT 1";
+   $query="SELECT * from `".$table."` where id=".$id." LIMIT 1";
     $data=[];
     $result=mysqli_query($conn,$query);
     if(mysqli_num_rows($result)>0){
@@ -93,12 +93,25 @@ function dbQuery($query){
     }
     return $data;
 }
-
+function getSingleProduct($query){
+    global $conn;
+    $row=array();
+    $result=mysqli_query($conn,$query);
+    if(mysqli_num_rows($result)>0){
+        $row=mysqli_fetch_assoc($result);
+    }
+    return $row;
+}
 function getTotalData($query){
      global $conn;
     $query="SELECT * from `".$table."`";
     $result=mysqli_query($conn,$query);
     return mysqli_num_rows($result);
+}
+function printData(Array $data){
+    echo "<pre>";
+    print_r($data);
+    exit;
 }
 
 ?>

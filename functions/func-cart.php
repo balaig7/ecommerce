@@ -2,33 +2,73 @@
 require_once "config/connection.php";
 
 //it generates random id after user logged id
-function generateSessionId(){ 
-    $uniqueId=md5(uniqid(rand(), true));
-    return $uniqueId;
-}
 
-function createOrGetSessionCart($userId,$sessionId,Array $sessionData){
-global $conn;
-$getSessionCartData=mysqli_query($conn,"SELECT * FROM `session_cart` where user_id=".$userId." LIMIT 1");
-if($getSessionCartData){
-    if(mysqli_num_rows($getSessionCartData)>0){
-        $data=mysqli_fetch_assoc($getSessionCartData);
-        $sessionData=$data['session_data'];
-    }else{
-        $createNewSession=mysqli_query($conn,"INSERT INTO `session_cart` (user_id,session_id,session_data,created_at)values('".$userId."','".$sessionId."','".json_encode($sessionData)."','".date("Y-m-d h:i:s")."')");
-        if($createNewSession){
-            $data=mysqli_fetch_assoc($getSessionCartData);
-            $sessionData=$data['session_data'];
-        }
-        
+
+function checkProductIncart($sessionId, $userId = '', $productId)
+{
+    global $conn;
+    //for loggedin users
+    if (!empty($userId))
+    {
+        $where = "session_id='" . $sessionId . "' and user_id='" . $userId . "'";
     }
+    else
+    {
+        //for anonymous users
+        $where = "session_id='" . $sessionId . "'";
+    }
+    // echo "SELECT * FROM `session_cart` where " . $where . " and product_id='" . $productId . "' LIMIT 1";
+    $isExists = mysqli_query($conn, "SELECT * FROM `session_cart` where " . $where . " and product_id='" . $productId . "' LIMIT 1");
+    // return $isExists;
+    if (mysqli_num_rows($isExists) > 0)
+    {
+        return true;
+    }else{
+        return false;
+
+    }
+
+    
+
 }
-    $_SESSION['temp_data']=$sessionData;
-    return $_SESSION['temp_data'];
+function addToCart($productId, $quantity, $quantityInStock, $sessionId, $userId)
+{
+    global $conn;
+    if ($quantity <= $quantityInStock)
+    {
+        $isProductExists = checkProductIncart($sessionId, $userId, $productId);
+        if ($isProductExists)
+        {
+            //update quantity
+            if (!empty($userId))
+            {
+                $where = "session_id='" . $sessionId . "' and user_id='" . $userId . "'";
+            }
+            else
+            {
+                //for anonymous users
+                $where = "session_id='" . $sessionId . "'";
+            }
+            $updateQuantity = mysqli_query($conn, "UPDATE `session_cart` set quantity='" . $quantity."' where " . $where . " and product_id='" . $productId . "'");
+            if($updateQuantity){
+                sendResponse('success', 'Product added to cart');
+            }
+        }
+        else
+        {
+            //insert product
+            $insertProduct = mysqli_query($conn, "INSERT into `session_cart` (user_id,session_id,product_id,quantity,created_at)values('".$userId."','".$sessionId."','".$productId."','".$quantity."','".date("Y-m-d H:i:s")."')");
+            if($insertProduct){
+                sendResponse('success', 'Product added to cart');
+            }
+            
+        }
+    }
+    else
+    {
+        sendResponse('failed', 'This product only contains ' . $quantityInStock . ' in stock ');
+    }
+
 }
 
-function addToCart(){
- global $conn;
-   
-}
 ?>
