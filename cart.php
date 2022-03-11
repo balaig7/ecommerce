@@ -1,9 +1,8 @@
 <?php
 include __DIR__."/loader.php";
-// echo "<pre>";
-// print_r($_SESSION['cart']['products']);
-$grandTotal=0;
 $sessionCart=$_SESSION['cart']['products'];
+// echo "<pre>";
+// print_r($sessionCart);
 ?>
 <style>
    .table>tbody>tr>td, .table>tfoot>tr>td{
@@ -40,14 +39,10 @@ $sessionCart=$_SESSION['cart']['products'];
    td.empty-cart{
        padding:26px!important;
    }
-   /* .swal2-styled.swal2-confirm{
-
-	background-color:#D10024!important;
-} */
 </style>
 <div class="section">
     <div class="container">
-       <h2 class="cart-label">Shopping Cart</h2>
+       <h2 class="cart-label">SHOPPING CART</h2>
       <table id="cart" class="table table-hover table-condensed">
          <thead>
             <tr>
@@ -60,8 +55,9 @@ $sessionCart=$_SESSION['cart']['products'];
          </thead>
          <tbody>
              <?php  if(!empty($sessionCart)){ ?>
-             <?php foreach($sessionCart as $key => $value){ $grandTotal+=$value['discounted_price']*$value['quantity']; ?>
+             <?php foreach($sessionCart as $key => $value){  ?>
             <tr>
+               <input type="hidden" class="session_product_id" value="<?=$value['id']?>">
                <td data-th="Product">
                   <div class="row">
                      <div class="col-sm-2 hidden-xs"><img src="<?=str_replace("../",'',$value['thumnail_image_path']).$value['thumnail_image']?>"  class="img-responsive"/></div>
@@ -70,14 +66,20 @@ $sessionCart=$_SESSION['cart']['products'];
                      </div>
                   </div>
                </td>
-               <td data-th="Price">$<?=$value['discounted_price']?></td>
+               <td data-th="Price" class="product-price" data-price="<?=$value['discounted_price']?>">$<?=$value['discounted_price']?></td>
                <td data-th="Quantity">
-                  <input type="number" class="form-control text-center" value="<?=$value['quantity']?>">
+                  <!-- <input type="number" class="form-control text-center quantity" min="1" max="<?=$value['quantity_in_stock']?>" value="<?=$value['quantity']?>"> -->
+                  <div class="input-number price-min">
+                     <input id="price-min" class="quantity" type="number" min="1" max="<?=$value['quantity_in_stock']?>" value="<?=$value['quantity']?>">
+							<span class="qty-up">+</span>
+							<span class="qty-down">-</span>
+						</div>
                </td>
-               <td data-th="Subtotal" class="text-center">$<?=number_format(($value['discounted_price']*$value['quantity']),2)?></td>
+               <!-- <input type="hidden" class="sub_total" value="<?=number_format(($value['discounted_price']*$value['quantity']),2)?>"> -->
+               <td data-th="Subtotal" class="text-center sub-total">$<?=number_format(($value['discounted_price']*$value['quantity']),2)?></td>
                <td class="actions">
-                   <!-- <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button> -->
-                   <button class="btn btn-danger btn-sm" onclick="removeProductFromCart('<?=$value['product_id']?>','remove-product-from-cart')"><i class="fa fa-trash-o"></i></button>								
+                  <!-- <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button> -->
+                  <button class="btn btn-danger btn-sm" onclick="removeProductFromCart('<?=$value['id']?>','remove-product-from-cart')"><i class="fa fa-trash-o"></i></button>								
                 </td>
             </tr>
             <?php }?>  
@@ -92,10 +94,11 @@ $sessionCart=$_SESSION['cart']['products'];
             </tr> -->
             <tr>
                <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-               <td colspan="2" class="hidden-xs"></td>
-               <td class="hidden-xs text-center"><strong>Total $<?=number_format($grandTotal,2)?></strong></td>
+               <td class="hidden-xs"></td>
+               <td  class="hidden-xs">Total</td>
+               <td class="hidden-xs text-center"><strong class="grand-total">$<?=number_format($_SESSION['cart']['total'],2)?></strong></td>
              <?php  if(!empty($sessionCart)){ ?>
-               <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+               <td><a href="checkout.php" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
             <?php }else{ ?>
                 <td></td>
             <?php }?>  
@@ -109,51 +112,87 @@ $sessionCart=$_SESSION['cart']['products'];
 include __DIR__."/layouts/footer.php";
 ?>
 <script>
-    function removeProductFromCart(product,mode){
-Swal.fire({
-  title: 'Are you sure to remove this product from your cart?',
-  text: "",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes'
-}).then((result) => {
-  if (result.isConfirmed) {
-        $.ajax({
-		url:"cart-core.php",
-		type:"post",
-		data:{
-            product:product,
-            mode:mode
-        },
-		success:function(data){
-			var response = $.parseJSON(data);
-			if(response.status=='success'){
-				Swal.fire({
-                   title: response.message,
-                    text:'',
-                    icon:'success'
-				}).then(function (result) {
-     				if (result.value) {
-						location.reload();
-     				}
-   				});
+    function removeProductFromCart(product, mode) {
+    Swal.fire({
+        title: 'Are you sure to remove this product from your cart?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "cart-core.php",
+                type: "post",
+                data: {
+                    product_id: product,
+                    mode: mode
+                },
+                success: function(data) {
+                    var response = $.parseJSON(data);
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            title: response.message,
+                            text: '',
+                            icon: 'success'
+                        }).then(function(result) {
+                            if (result.value) {
+                                location.reload();
+                            }
+                        });
 
-		
-			}else{
-				Swal.fire(
-                    response.message,
-                    '',
-                    'error'
-                )
-			}
 
-		}
-	})
-}else{
+                    } else {
+                        Swal.fire(
+                            response.message,
+                            '',
+                            'error'
+                        )
+                    }
 
-}
+                }
+            })
+        }
     })
-    }
+}
+$(document).on("change",".quantity",function(){
+   var quantity_in_stock=parseInt($(this).attr("max"));
+   var currentRow=$(this).closest('tr');
+   var product=currentRow.find(".session_product_id").val();//get product id
+   var quantity=parseInt($(this).val());
+   if(quantity > quantity_in_stock){
+      Swal.fire(
+         "Sorry this product only contains "+quantity_in_stock+" in stock",
+         '',
+         'warning'
+      )
+      $(this).val(quantity_in_stock)
+   
+   }else{
+      $.ajax({
+         url:"cart-core.php",
+         type:"post",
+         data:{
+            mode:"add-quantity",
+            product_id:product,
+            quantity:quantity
+         },
+         success:function(data){
+            var response=$.parseJSON(data)
+            if(response.status=='success'){
+               var subTotal=parseInt(quantity)*parseFloat(currentRow.find("td.product-price").data('price'));
+               currentRow.find("td.sub-total").text("$"+(parseFloat(subTotal).toFixed(2)))//increase row total
+               // currentRow.find(".sub_total").val(parseFloat(subTotal).toFixed(2))//increase row total
+               
+               $(".grand-total").text("$"+response.message)
+            }
+            
+         }
+      })
+   }
+
+})
+
 </script>

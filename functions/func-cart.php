@@ -42,7 +42,7 @@ function addToCart($productId, $quantity, $quantityInStock, $sessionId, $userId)
             //update quantity
             if (!empty($userId))
             {
-                $where = "session_id='" . $sessionId . "' and user_id='" . $userId . "'";
+                $where = "session_id='" . $sessionId . "' or user_id='" . $userId . "'";
             }
             else
             {
