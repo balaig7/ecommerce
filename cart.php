@@ -2,7 +2,7 @@
 include __DIR__."/loader.php";
 $sessionCart=$_SESSION['cart']['products'];
 // echo "<pre>";
-// print_r($sessionCart);
+// print_r($_SESSION);
 ?>
 <style>
    .table>tbody>tr>td, .table>tfoot>tr>td{
@@ -127,7 +127,7 @@ include __DIR__."/layouts/footer.php";
                 url: "cart-core.php",
                 type: "post",
                 data: {
-                    product_id: product,
+                    sess_prod_id: product,
                     mode: mode
                 },
                 success: function(data) {
@@ -176,7 +176,7 @@ $(document).on("change",".quantity",function(){
          type:"post",
          data:{
             mode:"add-quantity",
-            product_id:product,
+            sess_prod_id:product,
             quantity:quantity
          },
          success:function(data){

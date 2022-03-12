@@ -2,17 +2,18 @@
 require_once 'config.php';
 $mode = $_POST['mode'];
 $productId = $_POST['product_id'];
+$sessionCartProductId=$_POST['sess_prod_id'];
 $quantity = $_POST['quantity'];
 $productData = getSingleProduct("SELECT id,name,quantity as quantity_in_stock,original_price,discounted_price from `products` where id=" . $productId . "");
 $quantityInStock = $productData['quantity_in_stock'];
 $getProductInCart = getSingleProduct("SELECT * from `session_cart` where $where and product_id='" . $productId . "'");
 if (empty($getProductInCart))
 {
-    $quantity = $quantity;
+    $quan = $quantity;
 }
 else
 {
-    $quantity = $getProductInCart['quantity'] + $quantity;
+    $quan= ($getProductInCart['quantity']) + ($quantity);
 }
 switch ($mode)
 {
@@ -20,7 +21,7 @@ switch ($mode)
         addToCart($productId, $quantity, $quantityInStock, $sessionUserId, $currentLoggedUserId);
     break;
     case 'remove-product-from-cart':
-        $removeProductFromCart = mysqli_query($conn, "DELETE FROM `session_cart` where $where and id='" . $productId . "'");
+        $removeProductFromCart = mysqli_query($conn, "DELETE FROM `session_cart` where $where and id='" . $sessionCartProductId . "'");
         if ($removeProductFromCart)
         {
             sendResponse('success', 'Product Removed Successfully');
@@ -32,7 +33,7 @@ switch ($mode)
         }
     break;
     case 'add-quantity':
-        $updateQuantity = mysqli_query($conn, "UPDATE `session_cart` set quantity='" . $quantity . "' where $where and id=" . $productId . "");
+        $updateQuantity = mysqli_query($conn, "UPDATE `session_cart` set quantity='" . $quan . "' where $where and id=" . $sessionCartProductId . "");
         if ($updateQuantity)
         {
             $productsInCart = mysqli_query($conn, "SELECT * FROM `session_cart` where $where");

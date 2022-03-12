@@ -103,6 +103,63 @@
 		<script src="assets/js/jquery.zoom.min.js"></script>
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/sweetalert.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+	<?php
+	// require_once "config/connection.php";
+	// $productsNames=mysqli_query($conn,'SELECT name from `products`');
+	// $data=array();
+	// if($productsNames){
+	// 	if(mysqli_num_rows($productsNames)>0){
+	// 		while ($row=mysqli_fetch_assoc($productsNames)) {
+	// 			$data[]=$row;			
+	// 		}
+	// 	}else{
+	// 		echo "No Results found";
+	// 	}
+	// }
+	// // $availableTags='';
+	// foreach ($data as $key => $value) {
+	// 	$availableTags.=("'".implode(" , ",addslashes($value))."'");
+	// }
+	// // echo "<pre>";
+	// // print_r($data);
+	// // echo $availableTags;
+	// ?>
+		<script>
+	$("#search-product").bind("change paste keyup", function() {
+		// alert('hi')
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+	
+    $( this ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+
+
 
 	</body>
 </html>

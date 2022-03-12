@@ -27,6 +27,7 @@
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
 		<link rel="stylesheet" href="assets/css/sweetalert.css">
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
 
     </head>
 	<body>
@@ -68,15 +69,11 @@
 						<!-- /LOGO -->
 
 						<!-- SEARCH BAR -->
-						<div class="col-md-6">
+						<div class="col-md-6 text-center">
 							<div class="header-search">
 								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
-									</select>
-									<input class="input" placeholder="Search here">
+									
+									<input class="input" id="search-product" placeholder="Search here">
 									<button class="search-btn">Search</button>
 								</form>
 							</div>
@@ -168,7 +165,7 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
+						<li class="active"><a href="index.php">Home</a></li>
 						<?php foreach(dbQuery('SELECT * from `category` where status="1"') as $value ) {?>
 						<li><a href="products.php?category=<?=$value->name?>"><?=$value->name?></a></li>
 						<?php } ?>

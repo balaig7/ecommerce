@@ -1,5 +1,5 @@
 <?php
-require_once("settings.php");
+// require_once("settings.php");
 	$paypalUrl='https://www.sandbox.paypal.com/cgi-bin/webscr';
 	$paypalId='sb-dyajt7448805@personal.example.com';
 
@@ -24,9 +24,10 @@ $_SESSION['cart']['user']=$_SESSION['current_user'];
 if(empty($currentLoggedUserId)){
     $where = "session_id='" . $sessionUserId . "'";
 }else{
-    $where = "session_id='" . $sessionUserId . "' or user_id='" . $userId . "'";
+    $where = "session_id='" . $sessionUserId . "' and user_id='" . $currentLoggedUserId . "'";
 
 }
+// echo "SELECT * FROM `session_cart` where $where";
 $productsInCart=dbQuery("SELECT * FROM `session_cart` where $where");
 $convertToArray=json_decode(json_encode($productsInCart),true);
 $productsInCart=array();

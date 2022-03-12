@@ -35,7 +35,7 @@ else
 }
 $startFrom = ($page - 1) * $pageLimit;
 $productData['products'] = dbQuery("SELECT id,name,thumnail_image_path,thumnail_image,original_price,discounted_price from `products` where " . $where . " and status='1' LIMIT " . $startFrom . "," . $pageLimit . " ");
-$productData['showing_limits']="SHOWING " . $startFrom ."-".($startFrom+$pageLimit)." OF ".($totalRecord) ." PRODUCTS";
+$productData['showing_limits']="SHOWING " . $startFrom ."-".($startFrom+count($productData['products']))." OF ".($totalRecord) ." PRODUCTS";
 foreach ($productData['products'] as $key => $value)
 {
     $value->thumnail_image_path = str_replace("../", "", $value->thumnail_image_path);
