@@ -14,8 +14,14 @@ include __DIR__."/loader.php";
                     <form class="check-out" action="<?=$paypalUrl?>" method="post">
                     						    <input type="hidden" name="business" value="<?php echo $paypalId; ?>">
 						    <input type="hidden" name="cmd" value="_xclick">
-						    <input type="hidden" name="item_name" value="Samsung">
-						    <input type="hidden" name="item_number" value="2">
+							        <?php foreach ($_SESSION['cart']['products'] as $key => $value) { ?>
+									<!-- <div><?=$value['quantity']?> x <?=$value['name']?></div> -->
+									<input type="hidden" name="item_name" value="<?=$value['name']?>">
+									<input type="hidden" name="item_number" value="<?=$value['quantity']?>">
+
+									<!-- <div>$<?=number_format($value['quantity']*$value['discounted_price'],2)?></div> -->
+									<?php } ?>
+						    <!-- <input type="hidden" name="item_name" value="Samsung"> -->
 						    <input type="hidden" name="amount" value="<?=number_format($_SESSION['cart']['total'],2)?>">
 						    <input type="hidden" name="no_shipping" value="1">
 						    <input type="hidden" name="currency_code" value="USD">

@@ -57,7 +57,7 @@ background: url('assets/img/loader.gif')
 					<ul class="header-links pull-right">
 						<!-- <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li> -->
 						<li>
-							<?=$isUserActive ? '<a href="#"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="login.php"><i class="fa fa-user-o"></i>Login</a>' ?>
+							<?=$isUserActive ? '<a href="my-account.php"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="login.php"><i class="fa fa-user-o"></i>Login</a>' ?>
 						</li>
 					</ul>
 				</div>

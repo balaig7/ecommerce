@@ -117,7 +117,7 @@ function loadData(parentCategory,subcategory='',page=''){
 							productsData+='</div>'
 						productsData+='</div>'
 						productsData+='<div class="product-body">'
-							productsData+='<h3 class="product-name"><a href="#">'+products.name+'</a></h3>'
+							productsData+='<h3 class="product-name">'+products.name+'</h3>'
 							productsData+='<h4 class="product-price">$'+products.discounted_price+'<del class="product-old-price">$'+products.original_price+'</del></h4>'
 							productsData+='<div class="product-rating">'
 								productsData+='<i class="fa fa-star"></i>'

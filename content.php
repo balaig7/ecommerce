@@ -57,9 +57,7 @@ $product=find($_GET['id'],'products');
 								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
 							</div>
 
-							<ul class="product-btns">
-								<li><a href="javascript:void(0)" ><i class="fa fa-heart-o"></i> add to wishlist</a></li>
-							</ul>
+							
 
 							<!-- <ul class="product-links">
 								<li>Category:</li>
