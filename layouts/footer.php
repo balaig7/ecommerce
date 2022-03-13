@@ -104,6 +104,8 @@
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/sweetalert.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+			<script src="assets/js/custom.js"></script>
+
 	<?php
 	// require_once "config/connection.php";
 	// $productsNames=mysqli_query($conn,'SELECT name from `products`');

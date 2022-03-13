@@ -1,24 +1,27 @@
 <?php
 require_once 'config.php';
-$mode = $_POST['mode'];
-$productId = $_POST['product_id'];
-$sessionCartProductId=$_POST['sess_prod_id'];
-$quantity = $_POST['quantity'];
+$mode = mysqli_real_escape_string($conn,$_POST['mode']);
+$productId = mysqli_real_escape_string($conn,$_POST['product_id']);
+$sessionCartProductId=mysqli_real_escape_string($conn,$_POST['sess_prod_id']);
+$quantity = mysqli_real_escape_string($conn,$_POST['quantity']);
+$wishlistProduct=mysqli_real_escape_string($conn,$_POST['wish_list_id']);
 $productData = getSingleProduct("SELECT id,name,quantity as quantity_in_stock,original_price,discounted_price from `products` where id=" . $productId . "");
 $quantityInStock = $productData['quantity_in_stock'];
 $getProductInCart = getSingleProduct("SELECT * from `session_cart` where $where and product_id='" . $productId . "'");
+// echo "SELECT * from `session_cart` where $where and product_id='" . $productId . "'";
 if (empty($getProductInCart))
 {
     $quan = $quantity;
 }
 else
 {
-    $quan= ($getProductInCart['quantity']) + ($quantity);
+    $quan= $getProductInCart['quantity'] + $quantity;
 }
+// echo $quan
 switch ($mode)
 {
     case 'add-to-cart':
-        addToCart($productId, $quantity, $quantityInStock, $sessionUserId, $currentLoggedUserId);
+        addToCart($productId, $quan, $quantityInStock, $sessionUserId, $currentLoggedUserId);
     break;
     case 'remove-product-from-cart':
         $removeProductFromCart = mysqli_query($conn, "DELETE FROM `session_cart` where $where and id='" . $sessionCartProductId . "'");
@@ -28,7 +31,7 @@ switch ($mode)
         }
         else
         {
-            sendResponse('success', 'Error in Removing product');
+            sendResponse('failed', 'Error in Removing product');
 
         }
     break;
@@ -55,6 +58,33 @@ switch ($mode)
             }
 
             sendResponse('success', number_format($total, 2));
+        }
+    break;
+
+    case 'add-to-wishlist':
+        $query=mysqli_query($conn,"SELECT * FROM `wishlist` where user_id='".$currentLoggedUserId."' and product_id='".$productId."'");
+        if($query){
+            if(mysqli_num_rows($query)>0){
+                sendResponse('failed', "This product already exists in your wishlist");
+            }else{
+                $addProductToWishlist=mysqli_query($conn,"INSERT into `wishlist` (user_id,product_id) values('".$currentLoggedUserId."','".$productId."')");
+                if($addProductToWishlist){
+                    sendResponse('success', "Product added to your wishlist");
+                }
+            }
+        }
+    break;
+
+    case 'remove-product-from-wishlist':
+    $removeProductFromWishlist = mysqli_query($conn, "DELETE FROM `wishlist` where  id='" . $wishlistProduct . "'");
+        if ($removeProductFromWishlist)
+        {
+            sendResponse('success', 'Product Removed Successfully');
+        }
+        else
+        {
+            sendResponse('failed', 'Error in Removing product');
+
         }
     break;
 

@@ -1,5 +1,5 @@
 <?php
-// require_once("settings.php");
+require_once("settings.php");
 	$paypalUrl='https://www.sandbox.paypal.com/cgi-bin/webscr';
 	$paypalId='sb-dyajt7448805@personal.example.com';
 
@@ -10,8 +10,12 @@ function sendResponse($status,$successMessage,$url=''){
     exit;
     
 }
+if($_SESSION['current_user']['role']=='admin'){
+    session_destroy();
+
+}
+
 $date=date("Y-m-d H:i:s");
-// session_destroy();
 foreach (glob("functions/*.php") as $filename)
 {
     require_once $filename;
@@ -23,9 +27,11 @@ $currentLoggedUserId=empty($_SESSION['current_user']) ? '0'  : $_SESSION['curren
 $_SESSION['cart']['user']=$_SESSION['current_user'];
 if(empty($currentLoggedUserId)){
     $where = "session_id='" . $sessionUserId . "'";
+    $_SESSION['cart']['wishlist']=array();
 }else{
     $where = "session_id='" . $sessionUserId . "' and user_id='" . $currentLoggedUserId . "'";
-
+    $productsInWishlist=dbQuery("select wishlist.id,wishlist.product_id,products.name,products.discounted_price,products.thumnail_image_path,products.thumnail_image,products.quantity as quantity_in_stock from wishlist INNER JOIN products on products.id=wishlist.product_id where wishlist.user_id=".$currentLoggedUserId.""); 
+    $_SESSION['cart']['wishlist']=json_decode(json_encode($productsInWishlist),true);
 }
 // echo "SELECT * FROM `session_cart` where $where";
 $productsInCart=dbQuery("SELECT * FROM `session_cart` where $where");
@@ -41,6 +47,8 @@ foreach($_SESSION['cart']['products'] as $key => $value){
     $grandTotal+=$value['discounted_price']*$value['quantity'];            
 }
 $_SESSION['cart']['total']=$grandTotal;
+// echo "<pre>";
+// print_r($_SESSION);
 
 
 ?>

@@ -39,9 +39,11 @@ $sessionCart=$_SESSION['cart']['products'];
    td.empty-cart{
        padding:26px!important;
    }
+   
 </style>
 <div class="section">
     <div class="container">
+       <div class="loader-img"></div>
        <h2 class="cart-label">SHOPPING CART</h2>
       <table id="cart" class="table table-hover table-condensed">
          <thead>
@@ -52,7 +54,8 @@ $sessionCart=$_SESSION['cart']['products'];
                <th style="width:22%" class="text-center">Subtotal</th>
                <th style="width:10%"></th>
             </tr>
-         </thead>
+         </thead>               
+
          <tbody>
              <?php  if(!empty($sessionCart)){ ?>
              <?php foreach($sessionCart as $key => $value){  ?>
@@ -84,7 +87,7 @@ $sessionCart=$_SESSION['cart']['products'];
             </tr>
             <?php }?>  
             <?php }else{?>  
-                <td class="empty-cart text-center" colspan="5" class="text-center">No Product in the cart</td>
+                <td class="empty-cart text-center" colspan="5" class="text-center">Your cart is empty</td>
 
             <?php }?>  
          </tbody>
@@ -123,6 +126,8 @@ include __DIR__."/layouts/footer.php";
         confirmButtonText: 'Yes'
     }).then((result) => {
         if (result.isConfirmed) {
+           $('.loader-img').show();
+
             $.ajax({
                 url: "cart-core.php",
                 type: "post",
@@ -131,6 +136,7 @@ include __DIR__."/layouts/footer.php";
                     mode: mode
                 },
                 success: function(data) {
+                  $('.loader-img').hide();
                     var response = $.parseJSON(data);
                     if (response.status == 'success') {
                         Swal.fire({
@@ -153,6 +159,8 @@ include __DIR__."/layouts/footer.php";
                     }
 
                 }
+                      
+
             })
         }
     })

@@ -27,8 +27,21 @@
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
 		<link rel="stylesheet" href="assets/css/sweetalert.css">
-<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+		<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+	<style>
+	.loader-img{
+   display:none;  
+   position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+background: url('assets/img/loader.gif') 
+50% 50% no-repeat rgb(255,255,255);
 
+     }
+	</style>
     </head>
 	<body>
 		<!-- HEADER -->
@@ -84,13 +97,16 @@
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
 								<!-- Wishlist -->
+								<?php if(!empty($currentLoggedUserId)) {?>
+								
 								<div>
-									<a href="#">
+									<a href="wishlist.php">
 										<i class="fa fa-heart-o"></i>
 										<span>Your Wishlist</span>
-										<div class="qty">2</div>
+										<div class="qty"><?=count($_SESSION['cart']['wishlist']) ?></div>
 									</a>
 								</div>
+								<?php } ?>
 								<!-- /Wishlist -->
 
 								<!-- Cart -->

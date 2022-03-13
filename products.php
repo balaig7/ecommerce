@@ -13,8 +13,10 @@ li.active>a{
 	background-color:#D10024!important;
 }
 </style>
+<div class="loader-img"></div>
 <div class="section">
    <div class="container">
+
 	<input type="hidden" id="sess_status" value=<?=$isUserActive?>>
       <div class="row">
          <div id="aside" class="col-md-3">
@@ -60,6 +62,7 @@ loadData(parent_cat_id)
 var sessionStatus=$("#sess_status").val();
 
 function loadData(parentCategory,subcategory='',page=''){
+	$('.loader-img').show();
 	$.ajax({
 		url:"view-data.php",
 		type:"post",
@@ -69,6 +72,7 @@ function loadData(parentCategory,subcategory='',page=''){
 			page:page
 		},
 		success:function(data){
+			$('.loader-img').hide();
 			var parsedData=JSON.parse(data);
 			var subCat=productsData=pages='';
 			$("ul.store-pagination").empty();
@@ -124,12 +128,12 @@ function loadData(parentCategory,subcategory='',page=''){
 							productsData+='</div>'
 							if(sessionStatus==1){
 							productsData+='<div class="product-btns">'
-								productsData+='<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>'
+								productsData+='<button class="add-to-wishlist" type="button" onclick="addToWishlist('+products.id+')"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>'
 							productsData+='</div>'
 							}
 						productsData+='</div>'
 						productsData+='<div class="add-to-cart">'
-							productsData+='<button class="add-to-cart-btn" type="button" data-id="'+products.id+'"><i class="fa fa-shopping-cart"></i> add to cart</button>'
+							productsData+='<button class="add-to-cart-btn"  type="button" data-id="'+products.id+'" onclick="addToCart($(this.form).serialize())"><i class="fa fa-shopping-cart" ></i> add to cart</button>'
 						productsData+='</div>'
 					productsData+='</div>'
 				productsData+='</div>'
@@ -152,42 +156,42 @@ function loadData(parentCategory,subcategory='',page=''){
 	})
 }
 $(document).on("change",'.brands',function(){
-	$(".brands").prop('checked', false);
+	$(".brands").prop('checked', false);//checkbox works as radio button
     $(this).prop('checked', true);
 	var value=$(this).val()
 	loadData(parent_cat_id,value,page='')
 })
 
-$(document).on("click",".add-to-cart-btn",function(){
-	$.ajax({
-		url:"cart-core.php",
-		type:"post",
-		data:$(this.form).serialize(),
-		success:function(data){
-			var response = $.parseJSON(data);
-			if(response.status=='success'){
-				Swal.fire({
-                   title: response.message,
-                    text:'',
-                    icon:'success'
-				}).then(function (result) {
-     				if (result.value) {
-						location.reload();
-     				}
-   				});
+// $(document).on("click",".add-to-cart-btn",function(){
+// 	$.ajax({
+// 		url:"cart-core.php",
+// 		type:"post",
+// 		data:$(this.form).serialize(),
+// 		success:function(data){
+// 			var response = $.parseJSON(data);
+// 			if(response.status=='success'){
+// 				Swal.fire({
+//                    title: response.message,
+//                     text:'',
+//                     icon:'success'
+// 				}).then(function (result) {
+//      				if (result.value) {
+// 						location.reload();
+//      				}
+//    				});
 
 		
-			}else{
-				Swal.fire(
-                    response.message,
-                    '',
-                    'error'
-                )
-			}
+// 			}else{
+// 				Swal.fire(
+//                     response.message,
+//                     '',
+//                     'error'
+//                 )
+// 			}
 
-		}
-	})
-})
+// 		}
+// 	})
+// })
 
 
 </script>

@@ -2,6 +2,8 @@
 include __DIR__."/loader.php";
 $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 ?>
+       <div class="loader-img"></div>
+
 <!-- HOT DEAL SECTION -->
 		<div id="hot-deal" class="section">
 			<!-- container -->
@@ -69,30 +71,36 @@ $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 								<div id="tab1" class="tab-pane active">
 									<div class="products-slick" data-nav="#slick-nav-1">
 						<?php  foreach ($products as $productKey => $productValue) { ?>
-									
-										<div class="product">
-											<div class="product-img">
-												<img src="<?=str_replace("../",'',$productValue->thumnail_image_path).$productValue->thumnail_image?>" alt="">
-												
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="content.php?id=<?=$productValue->id?>"><?=$productValue->name?></a></h3>
-												<h4 class="product-price">$<?=$productValue->discounted_price?> <del class="product-old-price">$<?=$productValue->original_price?></del></h4>
-												<div class="product-rating">
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-													<i class="fa fa-star"></i>
-												</div>
-												<div class="product-btns">
-													<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-												</div>
-											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-											</div>
+							<div class="product">
+								<form method="post" class="form-<?=$productKey?>">
+									<input type="hidden" name="product_id" value='<?=$productValue->id ?>'>
+									<input type="hidden" name="mode" value="add-to-cart">
+									<input type="hidden" name="quantity" value="1">
+									<div class="product-img">
+										<img src="<?=str_replace("../", '', $productValue->thumnail_image_path) . $productValue->thumnail_image ?>" alt="">
+									</div>
+									<div class="product-body">
+										<h3 class="product-name"><a href="content.php?id=<?=$productValue->id ?>"><?=$productValue->name ?></a></h3>
+										<h4 class="product-price">$<?=$productValue->discounted_price ?> <del class="product-old-price">$<?=$productValue->original_price ?></del></h4>
+										<div class="product-rating">
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
 										</div>
+										<?php if(!empty($currentLoggedUserId)) {?>
+										<div class="product-btns">
+											<button class="add-to-wishlist" type="button" onclick="addToWishlist('<?=$productValue->id ?>')"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+										</div>
+										<?php } ?>
+									</div>
+									<div class="add-to-cart">
+									<button class="add-to-cart-btn" type="button" data-id="<?=$productValue->id?>" onclick="addToCart($('.form-<?=$productKey?>').serialize())"><i class="fa fa-shopping-cart"></i> add to cart</button>
+									</div>
+								</form>
+							</div>
+
 										<?php }?>				
 									</div>
 									<div id="slick-nav-<?=$key+1?>" class="products-slick-nav"></div>

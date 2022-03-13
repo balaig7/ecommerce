@@ -42,12 +42,12 @@ function addToCart($productId, $quantity, $quantityInStock, $sessionId, $userId)
             //update quantity
             if (!empty($userId))
             {
-                $where = "session_id='" . $sessionId . "' or user_id='" . $userId . "'";
+                $where = "session_id='" . $sessionId . "' and user_id='" . $userId . "' and product_id='" . $productId . "'";
             }
             else
             {
                 //for anonymous users
-                $where = "session_id='" . $sessionId . "'";
+                $where = "session_id='" . $sessionId . "' and product_id='" . $productId . "'";
             }
             $updateQuantity = mysqli_query($conn, "UPDATE `session_cart` set quantity='" . $quantity."' where " . $where . " and product_id='" . $productId . "'");
             if($updateQuantity){
