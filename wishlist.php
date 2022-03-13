@@ -45,6 +45,8 @@ $wishlist=$_SESSION['cart']['wishlist'];
     <div class="container">
        <div class="loader-img"></div>
        <h2 class="cart-label">MY WISHLIST</h2>
+       <?php if(!empty($currentLoggedUserId)){ ?>
+
       <table id="cart" class="table table-hover table-condensed">
          <thead>
             <tr>
@@ -84,6 +86,9 @@ $wishlist=$_SESSION['cart']['wishlist'];
             
          </tfoot>
       </table>
+      <?php }else{ ?>
+        <h4 class="text-center text-danger">PLEASE <a href="login.php">LOGIN</a> TO CONTINUE</h4>
+    <?php } ?>
    </div>
 </div>
 <?php
