@@ -4,42 +4,28 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
 		<title>E - ACCESSORIES</title>
-
  		<!-- Google font -->
  		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-
  		<!-- Bootstrap -->
  		<link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css"/>
-
- 		<!-- Slick -->
  		<link type="text/css" rel="stylesheet" href="assets/css/slick.css"/>
  		<link type="text/css" rel="stylesheet" href="assets/css/slick-theme.css"/>
-
- 		<!-- nouislider -->
  		<link type="text/css" rel="stylesheet" href="assets/css/nouislider.min.css"/>
-
- 		<!-- Font Awesome Icon -->
  		<link rel="stylesheet" href="assets/css/font-awesome.min.css">
-
- 		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
 		<link rel="stylesheet" href="assets/css/sweetalert.css">
-		<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
 	<style>
 	.loader-img{
-   display:none;  
-   position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-background: url('assets/img/loader.gif') 
-50% 50% no-repeat rgb(255,255,255);
-
+   		display:none;  
+		position: fixed;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+		background: url('assets/img/loader.gif') 
+		50% 50% no-repeat rgb(255,255,255);
      }
 	</style>
     </head>
@@ -49,13 +35,7 @@ background: url('assets/img/loader.gif')
 			<!-- TOP HEADER -->
 			<div id="top-header">
 				<div class="container">
-					<!-- <ul class="header-links pull-left">
-						<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
-					</ul> -->
 					<ul class="header-links pull-right">
-						<!-- <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li> -->
 						<li>
 							<?=$isUserActive ? '<a href="my-account.php"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="login.php"><i class="fa fa-user-o"></i>Login</a>' ?>
 						</li>
@@ -112,7 +92,6 @@ background: url('assets/img/loader.gif')
 								<!-- Cart -->
 								<div class="dropdown">
 									<a  href="cart.php" aria-expanded="true">
-									<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="cart.php" aria-expanded="true"> -->
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
 										<div class="qty"><?=empty($_SESSION['cart']['products']) ? '0' : count($_SESSION['cart']['products'])?></div>
@@ -160,16 +139,11 @@ background: url('assets/img/loader.gif')
 										<span>Menu</span>
 									</a>
 								</div>
-								<!-- /Menu Toogle -->
 							</div>
 						</div>
-						<!-- /ACCOUNT -->
 					</div>
-					<!-- row -->
 				</div>
-				<!-- container -->
 			</div>
-			<!-- /MAIN HEADER -->
 		</header>
 		<!-- /HEADER -->
 
@@ -185,16 +159,8 @@ background: url('assets/img/loader.gif')
 						<?php foreach(dbQuery('SELECT * from `category` where status="1"') as $value ) {?>
 						<li><a href="products.php?category=<?=$value->name?>"><?=$value->name?></a></li>
 						<?php } ?>
-						<!-- <li><a href="#">Categories</a></li>
-						<li><a href="#">Laptops</a></li>
-						<li><a href="#">Smartphones</a></li>
-						<li><a href="#">Cameras</a></li>
-						<li><a href="#">Accessories</a></li> -->
+						
 					</ul>
-					<!-- /NAV -->
 				</div>
-				<!-- /responsive-nav -->
 			</div>
-			<!-- /container -->
 		</nav>
-		<!-- /NAVIGATION -->

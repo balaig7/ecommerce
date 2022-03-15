@@ -3,12 +3,8 @@ include __DIR__."/loader.php";
 $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 ?>
        <div class="loader-img"></div>
-
-<!-- HOT DEAL SECTION -->
 		<div id="hot-deal" class="section">
-			<!-- container -->
 			<div class="container">
-				<!-- row -->
 				<div class="row">
 					<div class="col-md-12">
 						<div class="hot-deal">
@@ -44,11 +40,8 @@ $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 						</div>
 					</div>
 				</div>
-				<!-- /row -->
 			</div>
-			<!-- /container -->
 		</div>
-		<!-- /HOT DEAL SECTION -->
 
 		<div class="section">
 			<div class="container">
@@ -106,13 +99,9 @@ $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 									<div id="slick-nav-<?=$key+1?>" class="products-slick-nav"></div>
 								</div>
 							</div>
-								<!-- /tab -->
 							</div>
 
 						</div>
-					<!-- </div>
-						</div>
-					</div> -->
 				<?php }}?>				
 
 				</div>
