@@ -1,8 +1,8 @@
 <?php
    include __DIR__."/loader.php";
    $userDetails=$_SESSION['current_user'];
-  //  echo "<pre>";
-  //  print_r($_SESSION);
+   // echo "<pre>";
+   // print_r($_SESSION);
 ?>
 <style>
    .nav-pills>li.active>a,.update{
@@ -18,11 +18,12 @@
 <div class="section">
    <div class="container">
       <div class="col-md-12">
-         <!-- <h3>Pills left</h3> -->
+         <?php if($_SESSION['active'] =='1' ){ ?>
          <!-- tabs left -->
          <div class="tabbable">
             <ul class="nav nav-pills nav-stacked col-md-3">
                <li class="active"><a href="#account" data-toggle="tab">Account</a></li>
+               <li><a href="#resetpassword" data-toggle="tab">Reset Password</a></li>
                <li ><a href="#orders" data-toggle="tab">Orders</a></li>
                <li><a href="logout.php" >Logout</a></li>
             </ul>
@@ -52,15 +53,65 @@
                      </div>
                   </form>
                </div>
+               <div class="tab-pane" id="resetpassword">
+                  <form method="post" id="reset-password">
+                     <div class="form-group col-md-12">
+                        <label>New Password</label>
+                        <input type="password" name='new_password' class="form-control">
+                        <input type="hidden" name='action' value="change_password" class="form-control">
+                     </div>
+                     <div class="form-group col-md-12">
+                        <button type="button" class="btn update" onclick="changePassword()">Change Password</button>
+                     </div>
+
+                  </form>
+               </div>
                <div class="tab-pane" id="orders">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</div>
+
             </div>
          </div>
          <!-- /tabs -->
+         <?php }else{ ?>
+         <h4  style="text-align: center;">Please <a class="text-danger" href="login.php">Login</a> to Continue<h4>
+         <?php } ?>
       </div>
-      <!-- /row -->
+      
    </div>
 </div>
 <hr>
 <?php
    include __DIR__."/layouts/footer.php";
-   ?>
+?>
+<script>
+function changePassword(){
+   	$.ajax({
+		url:"change-password.php",
+		type:"post",
+		data:$('#reset-password').serialize(),
+		success:function(data){
+			var response = $.parseJSON(data);
+			if(response.status=='success'){
+				Swal.fire({
+                   title: response.message,
+                    text:'',
+                    icon:'success'
+				}).then(function (result) {
+     				if (result.value) {
+						location.reload();
+     				}
+   				});
+
+		
+			}else{
+				Swal.fire(
+                    response.message,
+                    '',
+                    'error'
+                )
+			}
+
+		}
+	})
+}
+
+</script>

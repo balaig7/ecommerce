@@ -1,6 +1,8 @@
 <?php
 include __DIR__."/loader.php";
 $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
+// echo "<pre>";
+//    print_r($_SESSION);
 ?>
        <div class="loader-img"></div>
 		<div id="hot-deal" class="section">

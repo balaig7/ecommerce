@@ -8,11 +8,9 @@ $_SESSION['cart']=array();
 function sendResponse($status,$successMessage,$url=''){
     echo json_encode(array('status' => $status , 'message'=>$successMessage ,'redirectUrl' => $url ));
     exit;
-    
 }
 if($_SESSION['current_user']['role']=='admin'){
     session_destroy();
-
 }
 
 $date=date("Y-m-d H:i:s");
