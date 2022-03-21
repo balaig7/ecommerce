@@ -18,10 +18,22 @@ foreach (glob("functions/*.php") as $filename)
 {
     require_once $filename;
 }
-$_SESSION['sess_id']=session_id();
+
+$currentLoggedUserId=empty($_SESSION['current_user']) ? '0'  : $_SESSION['current_user']['id'];//get current logged user id
+if($currentLoggedUserId==0){
+    $_SESSION['sess_id']=session_id();
+}else{
+    $getOldToken="SELECT * FROM `session_cart` where user_id='".$currentLoggedUserId."' LIMIT 1";
+    $result=mysqli_query($conn,$getOldToken);
+    if(mysqli_num_rows($result)>0){
+        $row=mysqli_fetch_assoc($result);
+        $_SESSION['sess_id']=$row['session_id'];
+    }else{
+        $_SESSION['sess_id']=session_id();
+    }
+}
 $sessionUserId=$_SESSION['sess_id'];//generate random id for both logged in and anonymous users
 $isUserActive=empty($_SESSION['active']) ?  $_SESSION['active']='0' : $_SESSION['active'];//check if the user login or not
-$currentLoggedUserId=empty($_SESSION['current_user']) ? '0'  : $_SESSION['current_user']['id'];//get current logged user id
 $_SESSION['cart']['user']=$_SESSION['current_user'];
 if(empty($currentLoggedUserId)){
     $where = "session_id='" . $sessionUserId . "'";

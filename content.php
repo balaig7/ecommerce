@@ -1,10 +1,12 @@
 <?php
 include __DIR__."/loader.php";
 $product=find($_GET['id'],'products');
+$class="product-".$_GET['id']
 ?>
 		<div class="section">
 			<div class="container">
 				<div class="row">
+					<form method="post" class="<?=$class?>">
 					<div class="col-md-5 col-md-push-2">
 						<div id="product-main-img">
 							<?php foreach(explode(",",$product->product_images) as $value){ ?>
@@ -49,14 +51,16 @@ $product=find($_GET['id'],'products');
 								<div class="qty-label">
 									Qty
 									<div class="input-number">
-										<input type="number">
+										<input type="hidden" name="mode" value="add-to-cart">
+										<input type="number" class="quantity" min="1" value="1" max="<?=$product->quantity?>">
+										<input type="hidden" class="product_id" value="<?=$_GET['id']?>">
 										<span class="qty-up">+</span>
 										<span class="qty-down">-</span>
 									</div>
 								</div>
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn" type="button" onclick="addToCart($('.<?=$class?>').serialize())"><i class="fa fa-shopping-cart"></i> add to cart</button>
 							</div>
-
+							</form>
 							
 
 							<!-- <ul class="product-links">
@@ -273,4 +277,48 @@ $product=find($_GET['id'],'products');
 <?php
 include __DIR__."/layouts/footer.php";
 ?>
+<script>
+$(document).on("change",".quantity",function(){
+   var quantity_in_stock=parseInt($(this).attr("max"));
+   var currentRow=$(this).closest('tr');
+   var product=$(".product_id").val();//get product id
+   var quantity=parseInt($(this).val());
+   if(quantity > quantity_in_stock){
+      Swal.fire(
+         "Sorry this product only contains "+quantity_in_stock+" in stock",
+         '',
+         'warning'
+      )
+      $(this).val(quantity_in_stock)
+   
+   }
+//    else{
+//       $.ajax({
+//          url:"cart-core.php",
+//          type:"post",
+//          data:{
+//             mode:"add-quantity",
+//             sess_prod_id:product,
+//             quantity:quantity
+//          },
+//          success:function(data){
+//             var response=$.parseJSON(data)
+//             if(response.status=='success'){
+// 				Swal.fire({
+// 				title: response.success,
+// 				text: '',
+// 				icon: 'success'
+// 			}).then(function (result) {
+// 				if (result.value) {
+// 					location.reload();
+// 				}
+// 			});
+//             }
+            
+//          }
+//       })
+//    }
+
+})
+</script>
 

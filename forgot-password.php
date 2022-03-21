@@ -20,6 +20,8 @@ $_SESSION['current_user']=array();
       <link rel="stylesheet" href="admin/assets/css/style.min.css">
       <!-- Waves Effect -->
       <link rel="stylesheet" href="admin/assets/css/waves.min.css">
+      		<link rel="stylesheet" href="assets/css/sweetalert.css">
+
       <style>
     .frm-single .frm-submit{
         background-color: #D10024!important;
@@ -33,7 +35,7 @@ $_SESSION['current_user']=array();
    </head>
    <body>
       <div id="single-wrapper">
-         <form action="login.php" class="frm-single" method="post">
+         <form action="" class="frm-single" method="post">
             <div class="inside">
                <div class="title"><strong>E - ACCESSORIES</strong></div>
                <!-- /.title -->
@@ -62,13 +64,44 @@ $_SESSION['current_user']=array();
       <script src="admin/assets/js/nprogress.js"></script>
       <script src="admin/assets/js/waves.min.js"></script>
       <script src="admin/assets/js/main.min.js"></script>
+      <script src="assets/js/sweetalert.min.js"></script>
+
 <?php
 
 require_once 'config/connection.php';
 if(isset($_POST['submit'])){
-    
-}
-?>
+   $userName=mysqli_real_escape_string($conn,$_POST['user_name']);
+   $password=mysqli_real_escape_string($conn,password_hash($_POST['password'], PASSWORD_DEFAULT));
+   $checkEmail=mysqli_query($conn,"SELECT * FROM `login` where user_name='".$userName."'");
+   if(mysqli_num_rows($checkEmail)>0){
+      $row=mysqli_fetch_assoc($checkEmail);
+      $id=$row['id'];
+      $updatePassword=mysqli_query($conn,'UPDATE `login` set password="'.$password.'" where id="'.$id.'"');
+      if($updatePassword){
+         echo "<script> 
+      Swal.fire({
+				title: 'Password Updated',
+				text: '',
+				icon: 'success'
+			}).then(function (result) {
+            
+				if (result.value) {
+               window.location.href = 'http://localhost/ecommerce/login.php'
+				}
+			})
+         </script>";
+      }
+   }else{
+      echo "<script> 
+      Swal.fire(
+         'Incorrect Username',
+         '',
+         'error'
+			)
+         </script>";
+      }
+   }
+      ?>
 	
 
 </body>
