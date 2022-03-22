@@ -29,6 +29,9 @@ $_SESSION['current_user']=array();
     .frm-single .frm-input .frm-inp:focus{
         border-color: #D10024!important;
     }
+    #single-wrapper{
+        background: url(assets/img/sativa.png) top center repeat;
+    }
       </style>
    </head>
    <body>

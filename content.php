@@ -1,12 +1,12 @@
 <?php
 include __DIR__."/loader.php";
 $product=find($_GET['id'],'products');
-$class="product-".$_GET['id']
+$class="product-".$_GET['id'];
 ?>
 		<div class="section">
 			<div class="container">
+				<form method="post" class="<?=$class?>">
 				<div class="row">
-					<form method="post" class="<?=$class?>">
 					<div class="col-md-5 col-md-push-2">
 						<div id="product-main-img">
 							<?php foreach(explode(",",$product->product_images) as $value){ ?>
@@ -52,8 +52,8 @@ $class="product-".$_GET['id']
 									Qty
 									<div class="input-number">
 										<input type="hidden" name="mode" value="add-to-cart">
-										<input type="number" class="quantity" min="1" value="1" max="<?=$product->quantity?>">
-										<input type="hidden" class="product_id" value="<?=$_GET['id']?>">
+										<input type="number" name="quantity" class="quantity" min="1" value="1" max="<?=$product->quantity?>">
+										<input type="hidden" name="product_id" class="product_id" value="<?=$_GET['id']?>">
 										<span class="qty-up">+</span>
 										<span class="qty-down">-</span>
 									</div>

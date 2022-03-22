@@ -59,6 +59,7 @@ $wishlist=$_SESSION['cart']['wishlist'];
          <tbody>
              <?php  if(!empty($wishlist)){ ?>
              <?php foreach($wishlist as $key => $value){  ?>
+                
             <tr>
                <input type="hidden" class="session_product_id" value="<?=$value['id']?>">
                <td data-th="Product">
@@ -70,9 +71,7 @@ $wishlist=$_SESSION['cart']['wishlist'];
                   </div>
                </td>
                <td data-th="Price" class="product-price" data-price="<?=$value['discounted_price']?>">$<?=$value['discounted_price']?></td>
-               
                <td class="actions">
-                  <!-- <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button> -->
                   <button class="btn btn-danger btn-sm" onclick="removeProductFromWishlist('<?=$value['id']?>','remove-product-from-wishlist')"><i class="fa fa-trash-o"></i></button>								
                 </td>
             </tr>
