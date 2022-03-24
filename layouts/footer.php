@@ -10,9 +10,9 @@
 								<h3 class="footer-title">About Us</h3>
 								<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p> -->
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-									<li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-									<li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+									<li><a href="#"><i class="fa fa-map-marker"></i>43 Plane Road,Agastiar Patti</a></li>
+									<li><a href="#"><i class="fa fa-phone"></i>+91 9876543210</a></li>
+									<li><a href="#"><i class="fa fa-envelope-o"></i>e-accessories@gmail.com</a></li>
 								</ul>
 							</div>
 						</div>
@@ -37,7 +37,7 @@
 							<div class="footer">
 								<h3 class="footer-title">Service</h3>
 								<ul class="footer-links">
-									<li><a href="#">My Account</a></li>
+									<li><a href="my-account.php">My Account</a></li>
 									<li><a href="cart.php">View Cart</a></li>
 								<?php if(!empty($currentLoggedUserId)) {?>
 									<li><a href="wishlist.php">Wishlist</a></li>

@@ -18,6 +18,11 @@ ini_set('display_errors', 0);
       <link rel="stylesheet" href="assets/css/style.min.css">
       <!-- Waves Effect -->
       <link rel="stylesheet" href="assets/css/waves.min.css">
+      <style>
+      #single-wrapper{
+        background: url(assets/img/sativa.png) top center repeat;
+      }
+      </style>
    </head>
    <body>
       <div id="single-wrapper">
@@ -42,6 +47,8 @@ ini_set('display_errors', 0);
                <!-- /.frm-input -->
                <!-- /.clearfix -->
                <button type="submit" name="submit" class="frm-submit">Login<i class="fa fa-arrow-circle-right"></i></button>
+               <div><a href="forgot-password.php" class="a-link">Forgot Password?</a></div>
+
             </div>
             <!-- .inside -->
          </form>

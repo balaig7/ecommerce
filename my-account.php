@@ -66,7 +66,7 @@
 
                   </form>
                </div>
-               <div class="tab-pane" id="orders">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. Aliquam in felis sit amet augue.</div>
+               <div class="tab-pane" id="orders"></div>
 
             </div>
          </div>

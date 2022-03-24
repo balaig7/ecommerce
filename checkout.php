@@ -12,8 +12,10 @@ include __DIR__."/loader.php";
 				<!-- row -->
 				<div class="row">
                     <form class="check-out" action="<?=$paypalUrl?>" method="post">
-                    						    <input type="hidden" name="business" value="<?php echo $paypalId; ?>">
+                    	<input type="hidden" name="business" value="<?php echo $paypalId; ?>">
 						    <input type="hidden" name="cmd" value="_xclick">
+							    <input type="hidden" name="no_shipping" value="1">
+
 							        <?php foreach ($_SESSION['cart']['products'] as $key => $value) { ?>
 									<!-- <div><?=$value['quantity']?> x <?=$value['name']?></div> -->
 									<input type="hidden" name="item_name" value="<?=$value['name']?>">
