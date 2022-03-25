@@ -1,7 +1,7 @@
 <?php
    include __DIR__."/loader.php";
-   echo "<pre>";
-   print_r($_SESSION);
+   // echo "<pre>";
+   // print_r($_SESSION);
 ?>
 <style>
 .order-submit,.login-modal{
