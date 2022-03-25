@@ -1,7 +1,7 @@
 <?php
 require_once("settings.php");
 	$paypalUrl='https://www.sandbox.paypal.com/cgi-bin/webscr';
-	$paypalId='sb-smnv17447110@business.example.com';
+	$paypalId='sb-42c6514693397@business.example.com';
 
 session_start();
 $_SESSION['cart']=array();
@@ -9,6 +9,7 @@ function sendResponse($status,$successMessage,$url=''){
     echo json_encode(array('status' => $status , 'message'=>$successMessage ,'redirectUrl' => $url ));
     exit;
 }
+//if admin can login destroy the session
 if($_SESSION['current_user']['role']=='admin'){
     session_destroy();
 }
