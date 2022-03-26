@@ -17,9 +17,9 @@
       <!-- row -->
       <div class="row">
          <form class="check-out" action="<?=$paypalUrl?>" method="post">
-            <input type="hidden" name="business" value="<?php echo $paypalId; ?>">
+            <input type="hidden" name="business" value="<?=$paypalId?>">
             <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="no_shipping" value="1">
+            <!-- <input type="hidden" name="no_shipping" value="1"> -->
             <?php foreach ($_SESSION['cart']['products'] as $key => $value) { ?>
             <!-- <div><?=$value['quantity']?> x <?=$value['name']?></div> -->
             <input type="hidden" name="item_name" value="<?=$value['name']?>">
@@ -116,116 +116,9 @@
       </div>
    </div>
 </div>
-<!-- modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="myFunction()">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Login</h4>
-         </div>
-		 <form class="login-form" method="post">
-         <div class="modal-body">
-               <div class="form-group">
-                  <label>User Name</label>
-                  <input type="text" class="form-control" name="user_name">
-               </div>
-			    <input type="hidden" class="form-control" name="action" value="login">
-               <div class="form-group">
-                  <label >Password</label>
-                  <input type="password" class="form-control" name="password">
-               </div>
-			   <div>
-					<a href="#"  data-toggle="modal" data-target="#registerModal" data-dismiss="modal">New to E-ACCESSORIES? Register</a>
-			   </div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" onclick="myFunction()">Close</button>
-				<button type="button" class="btn btn-danger login" onclick="loginRegister($('.login-form').serialize())">Login</button>
-			</div>
-		</form>
-      </div>
-   </div>
-</div>
 
-<!-- register module -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="myFunction()">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Register</h4>
-         </div>
-		 <form class="register-form" method="post">
-         <div class="modal-body">
-			 <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" name="name" class="form-control">
-               </div>
-               <div class="form-group">
-                  <label>Mobile or Email</label>
-                  <input type="text" name="user_name" class="form-control">
-               </div>
-			   	<input type="hidden" class="form-control" name="action" value="register">
-               <div class="form-group">
-                  <label >Password</label>
-                  <input type="password" name="password" class="form-control">
-               </div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" onclick="myFunction()">Close</button>
-				<button type="button" class="btn btn-danger register" onclick="loginRegister($('.register-form').serialize())">Register</button>
-			</div>
-		</div>
-	</form>
-   </div>
-   </div>
-</div>
 <?php
    include __DIR__."/layouts/footer.php";
 ?>
-<script>
-function loginRegister(data){
-console.log(data)
-$.ajax({
-	url:"checkout-login.php",
-	type:"post",
-	data:data,
-	success:function(data){
-		var response=$.parseJSON(data);
-		if(response.status=='success'){
-         if(response.message=='Login success'){
-            location.reload();
-         }else{
-
-            
-            Swal.fire({
-               title: response.message,
-               text: '',
-               icon: 'success'
-            }).then(function(result) {
-               if (result.value) {
-                  location.reload();
-               }
-            });
-         }
-		}else{
-			Swal.fire({
-				title: response.message,
-				text: '',
-				icon: 'error'
-			}).then(function(result) {
-				if (result.value) {
-					location.reload();
-				}
-			});
-		}
-	}
-
-})
-}
-function myFunction() {
-    $('form').trigger('reset');
-}
 
 </script>

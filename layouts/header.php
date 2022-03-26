@@ -36,8 +36,9 @@
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-right">
-						<li>
-							<?=$isUserActive ? '<a href="my-account.php"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="login.php"><i class="fa fa-user-o"></i>Login</a>' ?>
+						<li>              
+
+							<?=$isUserActive ? '<a href="my-account.php"><i class="fa fa-user-o"></i> My Account</a>' : '<a href="#"  data-toggle="modal" data-target="#loginModal"><i class="fa fa-user-o"></i>Login</a>' ?>
 						</li>
 					</ul>
 				</div>

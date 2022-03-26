@@ -1,7 +1,7 @@
 <?php
 require_once("settings.php");
 	$paypalUrl='https://www.sandbox.paypal.com/cgi-bin/webscr';
-	$paypalId='sb-42c6514693397@business.example.com';
+	$paypalId='sb-erz1t15251550@business.example.com';
 
 session_start();
 $_SESSION['cart']=array();

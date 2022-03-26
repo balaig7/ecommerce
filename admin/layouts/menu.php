@@ -66,6 +66,9 @@
 				<li>
 					<a class="waves-effect" href="products.php"><i class="menu-icon fa fa-shopping-basket"></i><span>Products</span></a>
 				</li>
+				<li>
+					<a class="waves-effect" href="users.php"><i class="menu-icon fa fa-shopping-basket"></i><span>Users</span></a>
+				</li>
 			</ul>
 			<!-- /.menu js__accordion -->
 			

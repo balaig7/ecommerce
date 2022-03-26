@@ -84,11 +84,12 @@ require_once 'config/connection.php';
 if(isset($_POST['submit'])){
     $userName=mysqli_real_escape_string($conn,$_POST['user_name']);
     $password=$_POST['password'];
-    $query="SELECT id,display_name,profile_id,user_name,role,password FROM `login` where user_name='".$userName."'";
+    $query="SELECT id,display_name,profile_id,user_name,role,password,status FROM `login` where user_name='".$userName."'";
     $result=mysqli_query($conn,$query);
     if(mysqli_num_rows($result)>0){
         $userData=mysqli_fetch_assoc($result);
         if (password_verify($password, $userData['password'])) {
+            if($userData['status']=='1'){
                 unset($userData['password']);
                 $billingDetails=mysqli_query($conn,'SELECT address,city,country from `users` where id="'.$userData['profile_id'].'" LIMIT 1');
                 $billingDetailsData=mysqli_fetch_assoc($billingDetails);
@@ -106,6 +107,9 @@ if(isset($_POST['submit'])){
 				}else{
                     session_destroy();
                 }
+            }else{
+                echo "<script>alert('Sorry! your account has been temporarily blocked')</script>";
+            }
         }else{
 			echo "<script>alert('Incorrect Password')</script>";
 		}
