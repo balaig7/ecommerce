@@ -19,16 +19,24 @@ foreach (glob("functions/*.php") as $filename)
 {
     require_once $filename;
 }
+    // echo "<pre>";
+    // print_r($_SESSION);
 
 $currentLoggedUserId=empty($_SESSION['current_user']) ? '0'  : $_SESSION['current_user']['id'];//get current logged user id
 if($currentLoggedUserId==0){
     $_SESSION['sess_id']=session_id();
 }else{
+    if(!empty($_SESSION['sess_id'])){
+        $_SESSION['sess_id']=$_SESSION['sess_id']; 
+    }
+    // exit;
     $getOldToken="SELECT * FROM `session_cart` where user_id='".$currentLoggedUserId."' LIMIT 1";
     $result=mysqli_query($conn,$getOldToken);
     if(mysqli_num_rows($result)>0){
         $row=mysqli_fetch_assoc($result);
-        $_SESSION['sess_id']=$row['session_id'];
+        $oldSession=$row['session_id'];
+        // echo "UPDATE `session_cart` set session_id='".$_SESSION['sess_id']."',user_id='".$currentLoggedUserId."' where user_id='0' or session_id='".$oldSession."'";
+        mysqli_query($conn,"UPDATE `session_cart` set session_id='".$_SESSION['sess_id']."',user_id='".$currentLoggedUserId."' where user_id='0' or session_id='".$oldSession."'");
     }else{
         $_SESSION['sess_id']=session_id();
     }
@@ -37,7 +45,7 @@ $sessionUserId=$_SESSION['sess_id'];//generate random id for both logged in and 
 $isUserActive=empty($_SESSION['active']) ?  $_SESSION['active']='0' : $_SESSION['active'];//check if the user login or not
 $_SESSION['cart']['user']=$_SESSION['current_user'];
 if(empty($currentLoggedUserId)){
-    $where = "session_id='" . $sessionUserId . "'";
+    $where = "session_id='" . $sessionUserId . "' and user_id='0'";
     $_SESSION['cart']['wishlist']=array();
 }else{
     $where = "session_id='" . $sessionUserId . "' and user_id='" . $currentLoggedUserId . "'";

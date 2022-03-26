@@ -4,7 +4,7 @@ require_once "config/connection.php";
 //it generates random id after user logged id
 
 
-function checkProductIncart($sessionId, $userId = '', $productId)
+function checkProductIncart($sessionId, $userId , $productId)
 {
     global $conn;
     //for loggedin users
@@ -15,7 +15,7 @@ function checkProductIncart($sessionId, $userId = '', $productId)
     else
     {
         //for anonymous users
-        $where = "session_id='" . $sessionId . "'";
+        $where = "session_id='" . $sessionId . "' and user_id='" . $userId . "'";
     }
     // echo "SELECT * FROM `session_cart` where " . $where . " and product_id='" . $productId . "' LIMIT 1";
     $isExists = mysqli_query($conn, "SELECT * FROM `session_cart` where " . $where . " and product_id='" . $productId . "' LIMIT 1");
@@ -47,8 +47,9 @@ function addToCart($productId, $quantity, $quantityInStock, $sessionId, $userId)
             else
             {
                 //for anonymous users
-                $where = "session_id='" . $sessionId . "' and product_id='" . $productId . "'";
+                $where = "session_id='" . $sessionId . "' and user_id='0'";
             }
+            // echo "UPDATE `session_cart` set quantity='" . $quantity."' where " . $where . " and product_id='" . $productId . "'";
             $updateQuantity = mysqli_query($conn, "UPDATE `session_cart` set quantity='" . $quantity."' where " . $where . " and product_id='" . $productId . "'");
             if($updateQuantity){
                 sendResponse('success', 'Product added to cart');
@@ -57,6 +58,7 @@ function addToCart($productId, $quantity, $quantityInStock, $sessionId, $userId)
         else
         {
             //insert product
+            // echo "INSERT into `session_cart` (user_id,session_id,product_id,quantity,created_at)values('".$userId."','".$sessionId."','".$productId."','".$quantity."','".date("Y-m-d H:i:s")."')";
             $insertProduct = mysqli_query($conn, "INSERT into `session_cart` (user_id,session_id,product_id,quantity,created_at)values('".$userId."','".$sessionId."','".$productId."','".$quantity."','".date("Y-m-d H:i:s")."')");
             if($insertProduct){
                 sendResponse('success', 'Product added to cart');
