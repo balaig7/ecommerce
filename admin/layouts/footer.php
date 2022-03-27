@@ -25,6 +25,8 @@
 	<script src="assets/js/jquery.validation.js"></script>
 	<script src="assets/js/ckeditor/ckeditor.js"></script>
 	<script src="assets/js/custom.js"></script>
+		<script src="assets/js/remodal.min.js"></script>
+
 	<script>
     	$('.datatable').dataTable();
 	</script>

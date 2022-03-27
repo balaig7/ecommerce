@@ -139,7 +139,7 @@ $.ajax({
                title: response.message,
                text: '',
                icon:  response.status,
-			    confirmButtonColor: '#D10024',
+			   confirmButtonColor: '#D10024',
 
             }).then(function(result) {
                if (result.value) {

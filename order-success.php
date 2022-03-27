@@ -1,8 +1,10 @@
 <?php
 include __DIR__."/loader.php";
-$category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 // echo "<pre>";
-//    print_r($_SERVER);
+// print_r($_SESSION);
+$orderDetails=explode('-',$_GET['order_id']);
+$invoiceId=base64_decode($orderDetails['0']);
+$orderedProducts=dbQuery("select `orders`.total,`order_details`.product_name,`order_details`.product_price,`order_details`.quantity,`order_details`.sub_total from `orders` inner join `order_details` on  `orders`.id=`order_details`.order_id where `orders`.order_id='".$invoiceId."'");
 ?>
 <style>
     .invoice-heading{
@@ -107,40 +109,30 @@ $category=dbQuery("SELECT * FROM `category` WHERE status='1'");
 </style>
         <div class="section">
         <div class="container">
-        <p>Hi <b>test</b>,</p>
-        <p>Thank you. Your order has been received.Your order no is #444444444</p>
+        <p>Hi <b><?=$_SESSION['current_user']['display_name']?></b>,</p>
+        <p>Thank You. Your order has been received. Your order no is #<?=$invoiceId?></p>
 		<div class="invoice-box">
 			<table cellpadding="0" cellspacing="0">
-
-
 				<tr class="heading">
-					<td>Item</td>
-
+					<td>Items</td>
+					<td>Quantity</td>
 					<td>Price</td>
+					<td>Subtotal</td>
 				</tr>
-
-				<tr class="item">
-					<td>Website design</td>
-
-					<td>$300.00</td>
-				</tr>
-
-				<tr class="item">
-					<td>Hosting (3 months)</td>
-
-					<td>$75.00</td>
-				</tr>
-
-				<tr class="item last">
-					<td>Domain name (1 year)</td>
-
-					<td>$10.00</td>
-				</tr>
-
+                <?php foreach ($orderedProducts as $key => $value) { ?>
+                    <tr class="item">
+                        <td><?=$value->product_name?></td>
+                        <td><?=$value->quantity?></td>
+                        <td>$<?=$value->product_price?></td>
+                        <td>$<?=$value->sub_total?></td>
+                    </tr>
+                <?php } ?>
+				
 				<tr class="total">
 					<td></td>
-
-					<td>Total: $385.00</td>
+					<td></td>
+					<td>Total</td>
+					<td>$<?=$orderedProducts['0']->total?></td>
 				</tr>
 			</table>
 		</div>
