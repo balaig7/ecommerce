@@ -122,7 +122,7 @@
 <?php
    include __DIR__."/layouts/footer.php";
    ?>
-   <script src="https://www.paypal.com/sdk/js?client-id=AbsPhIWImWuMO_GM8eH3pb1xkKid3s5oHK1h-zGdsRKGaISorl7Z2-xiQRUiOcvDjtH7q9_d3fE0wsP0&disable-funding=credit,card" data-page-type="product-details"></script>
+   <script src="https://www.paypal.com/sdk/js?client-id=AbsPhIWImWuMO_GM8eH3pb1xkKid3s5oHK1h-zGdsRKGaISorl7Z2-xiQRUiOcvDjtH7q9_d3fE0wsP0&disable-funding=credit,card&buyer-country=US" data-page-type="product-details"></script>
 <script>
    paymentMethod();
    function paymentMethod(){

@@ -9,10 +9,41 @@
    background-color: #D10024!important;
    }
    .update,.update:hover{
-     color:#fff;
+   color:#fff;
    }
    .update:hover{
-     opacity: 0.9;
+   opacity: 0.9;
+   }
+   .panel-heading a::after {
+   content: "";
+   border: solid black;
+   border-width: 0 3px 3px 0;
+   display: inline-block;
+   padding: 5px;
+   position: absolute;
+   right: 0;
+   top: 0;
+   transform: rotate(45deg);
+   }
+   .panel-heading a {
+   display: block;
+   position: relative;
+   font-weight: bold;
+   &::after {
+   content: "";
+   border: solid black;
+   border-width: 0 3px 3px 0;
+   display: inline-block;
+   padding: 5px;
+   position: absolute;
+   right: 0;
+   top: 0;
+   transform: rotate(45deg);
+   }
+   &[aria-expanded="true"]::after {
+   transform: rotate(-135deg);
+   top: 5px;
+   }
    }
 </style>
 <div class="section">
@@ -30,10 +61,10 @@
             <div class="tab-content col-md-9">
                <div class="tab-pane active" id="account">
                   <form>
-                        <div class="form-group col-md-12">
-                           <label>Username</label>
-                           <input type="text" class="form-control" value="<?=$userDetails['user_name']?>" >
-                        </div>
+                     <div class="form-group col-md-12">
+                        <label>Username</label>
+                        <input type="text" class="form-control" value="<?=$userDetails['user_name']?>" >
+                     </div>
                      <div class="form-group col-md-12">
                         <label>Address</label>
                         <input type="text" class="form-control" value="<?=$userDetails['address']?>" >
@@ -63,19 +94,66 @@
                      <div class="form-group col-md-12">
                         <button type="button" class="btn update" onclick="changePassword()">Change Password</button>
                      </div>
-
                   </form>
                </div>
-               <div class="tab-pane" id="orders"></div>
+               <div class="tab-pane" id="orders">
+                  <?php foreach ($_SESSION['cart']['old_orders'] as $key => $value) { ?>
+                  <div class="panel-group" id="accordion">
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<?=$key?>">#<?=$value['invoice_id']?></a>
+                           </h4>
+                        </div>
+                        <div id="collapse-<?=$key?>" class="panel-collapse collapse">
+                           <div class="panel-body">
+                                 <div class="col-md-12">
+                                      <table class="table table-hover">
+                                          <thead>
+                                             <tr>
+                                             <th>S.no</th>
+                                             <th>Items</th>
+                                             <th>Quantity</th>
+                                             <th>Price</th>
+                                             <th>Subtotal</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <?php foreach ($value['order_details'] as $orderDetailsKey => $orderDetailsvalue) { ?>
+                                                <tr>
+                                                   <td><?=$orderDetailsKey+1?></td>
+                                                   <td><?=$orderDetailsvalue['product_name']?></td>
+                                                   <td><?=$orderDetailsvalue['quantity']?></td>
+                                                   <td><?=$orderDetailsvalue['product_price']?></td>
+                                                   <td><?=$orderDetailsvalue['sub_total']?></td>
+                                                </tr>
+                                             <?php } ?>
+                                             <tr>
+                                                   <td></td>
+                                                   <td></td>
+                                                   <td></td>
+                                                   <td>Total</td>
+                                                   <td><?=$value['total']?></td>
+                                                </tr>
+                                          </tbody>
+                                       </table>
+                                 </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                                       <?php  } ?>
 
+               </div>
             </div>
          </div>
          <!-- /tabs -->
          <?php }else{ ?>
-         <h4  style="text-align: center;">Please <a class="text-danger" href="login.php">Login</a> to Continue<h4>
+         <h4  style="text-align: center;">
+         Please <a class="text-danger" href="login.php">Login</a> to Continue
+         <h4>
          <?php } ?>
       </div>
-      
    </div>
 </div>
 <hr>
