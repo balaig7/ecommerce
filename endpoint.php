@@ -1,7 +1,5 @@
 <?php
 require_once 'config.php';
-echo "<pre>";
-print_r($_POST);
 $orderData=array();
 $responseData = file_get_contents('php://input');
 mysqli_query($conn,"INSERT into `events`(data)values('".$responseData."') ");
@@ -19,7 +17,7 @@ $orderData=array(
     'country'=>"USA",
     'zipCode'=>$billingAddress->postal_code,
     'total'=>$decodedvalue->purchase_units['0']->amount->value,
-    'status'=>"new",
+    'status'=>"1",
     'created_at' => $orderCreatedAt ,
 );
 $query="INSERT into `orders`(".implode("," ,array_keys($orderData)).") values ('".implode("','",$orderData)."')";

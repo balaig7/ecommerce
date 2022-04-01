@@ -15,6 +15,8 @@
  		<link rel="stylesheet" href="assets/css/font-awesome.min.css">
  		<link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
 		<link rel="stylesheet" href="assets/css/sweetalert.css">
+		  <link rel="stylesheet" href="assets/css/jquery-ui.css">
+
 	<style>
 	.loader-img{
    		display:none;  
@@ -27,6 +29,20 @@
 		background: url('assets/img/loader.gif') 
 		50% 50% no-repeat rgb(255,255,255);
      }
+	 .ui-menu .ui-menu-item-wrapper:hover {
+		background-color: #D10024!important;
+		border: #fff 1px solid;
+	}
+	#search-product{
+		border-radius: 9px;    
+	}
+	
+	.ui-autocomplete { 
+		height: 200px; 
+		overflow-y: scroll; 
+		overflow-x: hidden;
+	}
+
 	</style>
     </head>
 	<body>
@@ -66,9 +82,8 @@
 						<div class="col-md-6 text-center">
 							<div class="header-search">
 								<form>
-									
 									<input class="input" id="search-product" placeholder="Search here">
-									<button class="search-btn">Search</button>
+									<!-- <button class="search-btn">Search</button> -->
 								</form>
 							</div>
 						</div>
@@ -156,9 +171,9 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="index.php">Home</a></li>
-						<?php foreach(dbQuery('SELECT * from `category` where status="1"') as $value ) {?>
-						<li><a href="products.php?category=<?=$value->name?>"><?=$value->name?></a></li>
+						<li class="<?=basename($_SERVER['REQUEST_URI'])=='index.php' ? 'active': ''?>" ><a href="index.php">Home</a></li>
+						<?php foreach(dbQuery('SELECT * from `category` where status="1"') as $value ) { $href="category=".$value->name; ?>
+						<li class="<?=$_SERVER['QUERY_STRING']== $href ?'active':'' ?>"><a href="products.php?<?=$href?>"><?=$value->name?></a></li>
 						<?php } ?>
 						
 					</ul>

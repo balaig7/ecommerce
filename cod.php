@@ -13,7 +13,7 @@ $orderData=array(
     'country' => mysqli_real_escape_string($conn,$_POST['country']),
     'zipcode' => mysqli_real_escape_string($conn,$_POST['zip-code']),
     'total'=>$_SESSION['cart']['total'],
-    'status'=>"new",
+    'status'=>"1",
     'created_at' => $orderCreatedAt,
 );
 

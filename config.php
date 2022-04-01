@@ -64,7 +64,7 @@ $convertToArray=json_decode(json_encode($productsInCart),true);
 $productsInCart=array();
 $grandTotal=0;
 foreach ($convertToArray as $key => $value) {
-    $productData = getSingleProduct("SELECT id as products_unique_id,name,quantity as quantity_in_stock,thumnail_image_path,thumnail_image,discounted_price from `products` where id=" . $value['product_id'] . "");
+    $productData = getSingleProduct("SELECT id as products_unique_id,name,quantity as quantity_in_stock,sku,thumnail_image_path,thumnail_image,discounted_price from `products` where id=" . $value['product_id'] . "");
     $productsInCart[$value['id']]=array_merge($productData,$value);
 }
 $_SESSION['cart']['products']=$productsInCart;

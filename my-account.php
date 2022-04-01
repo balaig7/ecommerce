@@ -97,12 +97,35 @@
                   </form>
                </div>
                <div class="tab-pane" id="orders">
-                  <?php foreach ($_SESSION['cart']['old_orders'] as $key => $value) { ?>
+                  <?php foreach ($_SESSION['cart']['old_orders'] as $key => $value) {
+                   switch ($value['status']) {
+                        case '1':
+                           $status="New";
+                           $pillClass='primary';
+                           break;
+                        case '2':
+                           $pillClass='warning';
+                           $status="Processing";
+                           break;
+                        case '3':
+                           $status="Cancelled";
+                           $pillClass='danger';
+                           break;
+                        case '4':
+                           $status="Completed";
+                           $pillClass='success';
+                           break;
+                        default:
+                           # code...
+                           break;
+                     }    
+                  ?>
                   <div class="panel-group" id="accordion">
                      <div class="panel panel-default">
                         <div class="panel-heading">
                            <h4 class="panel-title">
-                              <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<?=$key?>">#<?=$value['invoice_id']?></a>
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<?=$key?>">#<?=$value['invoice_id']."(".strtoupper($status).")"?> </a>
+                              
                            </h4>
                         </div>
                         <div id="collapse-<?=$key?>" class="panel-collapse collapse">
