@@ -77,7 +77,7 @@ function loadData(parentCategory,subcategory='',page=''){
 			var subCat=productsData=pages='';
 			$("ul.store-pagination").empty();
 			$(".load-products").empty();
-
+    		$("html, body").animate({ scrollTop: 0 }, 600);
 			//load sub categories
 			if(parsedData.sub_categories.length>0){
 				subCat+='<h3 class="aside-title">Categories</h3>'
@@ -161,4 +161,5 @@ $(document).on("change",'.brands',function(){
 	var value=$(this).val()
 	loadData(parent_cat_id,value,page='')
 })
+
 </script>
