@@ -1,8 +1,6 @@
 <?php
 include __DIR__."/loader.php";
 $wishlist=$_SESSION['cart']['wishlist'];
-// echo "<pre>";
-// print_r($wishlist);
 ?>
 <style>
    .table>tbody>tr>td, .table>tfoot>tr>td{

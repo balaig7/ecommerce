@@ -157,10 +157,9 @@
          },
     onApprove: function (data, actions) {
         return actions.order.capture().then(function (details) {
-           console.log(details)
            $.ajax({
             'url':"endpoint.php",
-            'data': JSON.stringify(details), //{action:'x',params:['a','b','c']}
+            'data': JSON.stringify(details), 
             'type': 'POST',
             'processData': false,
             'contentType': 'application/json', //typically 'application/x-www-form-urlencoded', but the service you are calling may expect 'text/json'... check with the service to see what they expect as content-type in the HTTP header.
@@ -181,7 +180,7 @@
    function checkout(data) {
       $.ajax({
          url:"cod.php",
-         data: data, //{action:'x',params:['a','b','c']}
+         data: data,
          type: 'POST',
          success:function(data){
             var response=JSON.parse(data)

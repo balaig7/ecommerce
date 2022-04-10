@@ -1,7 +1,5 @@
 <?php
 include __DIR__."/loader.php";
-// echo "<pre>";
-// print_r($_SESSION);
 $orderDetails=explode('-',$_GET['order_id']);
 $invoiceId=base64_decode($orderDetails['0']);
 $orderedProducts=dbQuery("select `orders`.total,`order_details`.product_name,`order_details`.product_price,`order_details`.quantity,`order_details`.sub_total from `orders` inner join `order_details` on  `orders`.id=`order_details`.order_id where `orders`.order_id='".$invoiceId."'");

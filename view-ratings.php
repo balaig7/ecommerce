@@ -5,9 +5,6 @@ $productId=$_POST['product_id'];
 $ratings  = array();
 $pageLimit = 3; // Number of products to show in a page.
 $allReviews=dbQuery("SELECT * FROM `ratings` where product_id='".$productId."'");
-// echo "<pre>";
-// print_r($allReviews);
-// exit;
 $ratings['total_count']=count($allReviews);
 $ratings['all_reviews'] = $allReviews;
 $getProductcount = dbQuery("SELECT count('id') as total_records from `ratings` where product_id='".$productId."'");
@@ -22,8 +19,7 @@ else
     $page = 1; //default 1
 }
 $startFrom = ($page - 1) * $pageLimit;
-// echo "SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,`ratings`.created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' LIMIT " . $startFrom . "," . $pageLimit . "";
-$ratings['review_by_page'] = dbQuery("SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,`ratings`.created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' LIMIT " . $startFrom . "," . $pageLimit . " ");
+$ratings['review_by_page'] = dbQuery("SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,DATE_FORMAT(`ratings`.created_at, '%d-%m-%Y') as created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' LIMIT " . $startFrom . "," . $pageLimit . " ");
 $ratings['rating_by_value'][5] = count(dbQuery("SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,`ratings`.created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' and `ratings`.star_rating='5'"));
 $ratings['rating_by_value'][4] = count(dbQuery("SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,`ratings`.created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' and `ratings`.star_rating='4'"));
 $ratings['rating_by_value'][3] = count(dbQuery("SELECT `login`.display_name,`ratings`.review,`ratings`.star_rating,`ratings`.created_at from `ratings` inner join `login` on `login`.id=`ratings`.user_id where `ratings`.product_id='".$productId."' and `ratings`.star_rating='3'"));

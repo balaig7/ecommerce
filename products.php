@@ -161,37 +161,4 @@ $(document).on("change",'.brands',function(){
 	var value=$(this).val()
 	loadData(parent_cat_id,value,page='')
 })
-
-// $(document).on("click",".add-to-cart-btn",function(){
-// 	$.ajax({
-// 		url:"cart-core.php",
-// 		type:"post",
-// 		data:$(this.form).serialize(),
-// 		success:function(data){
-// 			var response = $.parseJSON(data);
-// 			if(response.status=='success'){
-// 				Swal.fire({
-//                    title: response.message,
-//                     text:'',
-//                     icon:'success'
-// 				}).then(function (result) {
-//      				if (result.value) {
-// 						location.reload();
-//      				}
-//    				});
-
-		
-// 			}else{
-// 				Swal.fire(
-//                     response.message,
-//                     '',
-//                     'error'
-//                 )
-// 			}
-
-// 		}
-// 	})
-// })
-
-
 </script>

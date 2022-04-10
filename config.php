@@ -19,8 +19,7 @@ foreach (glob("functions/*.php") as $filename)
 {
     require_once $filename;
 }
-    // echo "<pre>";
-    // print_r($_SESSION);
+
 
 $currentLoggedUserId=empty($_SESSION['current_user']) ? '0'  : $_SESSION['current_user']['id'];//get current logged user id
 if($currentLoggedUserId==0){
@@ -41,8 +40,7 @@ if($currentLoggedUserId==0){
     if(mysqli_num_rows($result)>0){
         $row=mysqli_fetch_assoc($result);
         $_SESSION['sess_id']=$row['session_id'];
-        // echo "UPDATE `session_cart` set session_id='".$_SESSION['sess_id']."',user_id='".$currentLoggedUserId."' where user_id='0' or session_id='".$oldSession."'";
-        // mysqli_query($conn,"UPDATE `session_cart` set session_id='".$_SESSION['sess_id']."',user_id='".$currentLoggedUserId."' where user_id='0' or session_id='".$oldSession."'");
+
     }else{
         $_SESSION['sess_id']=session_id();
     }
@@ -58,7 +56,6 @@ if(empty($currentLoggedUserId)){
     $productsInWishlist=dbQuery("select wishlist.id,wishlist.product_id,products.name,products.discounted_price,products.thumnail_image_path,products.thumnail_image,products.quantity as quantity_in_stock from wishlist INNER JOIN products on products.id=wishlist.product_id where wishlist.user_id=".$currentLoggedUserId.""); 
     $_SESSION['cart']['wishlist']=json_decode(json_encode($productsInWishlist),true);
 }
-// echo "SELECT * FROM `session_cart` where $where";
 $productsInCart=dbQuery("SELECT * FROM `session_cart` where $where");
 $convertToArray=json_decode(json_encode($productsInCart),true);
 $productsInCart=array();
@@ -79,8 +76,5 @@ foreach ($_SESSION['cart']['old_orders'] as $key => $value) {
     $_SESSION['cart']['old_orders'][$key]['order_details']=dbQuery('SELECT order_details.product_name,order_details.product_price,order_details.quantity,orders.created_at,order_details.sub_total FROM `orders` INNER JOIN order_details on order_details.order_id=orders.id where order_details.order_id="'.$value['id'].'"');
     $_SESSION['cart']['old_orders'][$key]['order_details']=json_decode(json_encode($_SESSION['cart']['old_orders'][$key]['order_details']),true);
 }
-// echo "<pre>";
-// print_r($_SESSION);
-
 
 ?>

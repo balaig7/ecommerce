@@ -1,8 +1,6 @@
 <?php
 include __DIR__."/loader.php";
 $sessionCart=$_SESSION['cart']['products'];
-// echo "<pre>";
-// print_r($_SESSION);
 ?>
 <style>
    .table>tbody>tr>td, .table>tfoot>tr>td{
@@ -71,17 +69,14 @@ $sessionCart=$_SESSION['cart']['products'];
                </td>
                <td data-th="Price" class="product-price" data-price="<?=$value['discounted_price']?>">$<?=$value['discounted_price']?></td>
                <td data-th="Quantity">
-                  <!-- <input type="number" class="form-control text-center quantity" min="1" max="<?=$value['quantity_in_stock']?>" value="<?=$value['quantity']?>"> -->
                   <div class="input-number price-min">
                      <input id="price-min" class="quantity" type="number" min="1" max="<?=$value['quantity_in_stock']?>" value="<?=$value['quantity']?>">
 							<span class="qty-up">+</span>
 							<span class="qty-down">-</span>
 						</div>
                </td>
-               <!-- <input type="hidden" class="sub_total" value="<?=number_format(($value['discounted_price']*$value['quantity']),2)?>"> -->
                <td data-th="Subtotal" class="text-center sub-total">$<?=number_format(($value['discounted_price']*$value['quantity']),2)?></td>
                <td class="actions">
-                  <!-- <button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button> -->
                   <button class="btn btn-danger btn-sm" onclick="removeProductFromCart('<?=$value['id']?>','remove-product-from-cart')"><i class="fa fa-trash-o"></i></button>								
                 </td>
             </tr>
@@ -92,11 +87,8 @@ $sessionCart=$_SESSION['cart']['products'];
             <?php }?>  
          </tbody>
          <tfoot>
-            <!-- <tr class="visible-xs">
-               <td class="text-center"><strong>Total 1.99</strong></td>
-            </tr> -->
             <tr>
-               <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+               <td><a href="<?=$_SERVER['HTTP_REFERER']?>" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                <td class="hidden-xs"></td>
                <td  class="hidden-xs">Total</td>
                <td class="hidden-xs text-center"><strong class="grand-total">$<?=number_format($_SESSION['cart']['total'],2)?></strong></td>

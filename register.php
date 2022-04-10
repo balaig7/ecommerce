@@ -70,7 +70,7 @@ if(isset($_POST['submit'])){
            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);//hash password
            $createLoginUser=mysqli_query($conn,"INSERT INTO `login`(profile_id,user_name,password,display_name,created_at)values('".$profileId."','".$userName."','".$hashedPassword."','".$name."','".date("Y-m-d h:i:s")."')");
             if($createLoginUser){
-               session_start();
+                session_start();
                 $_SESSION['welcome_message']="Welcome! You account has been created! Please login to continue";
                 header("location:login.php");
             }

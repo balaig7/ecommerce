@@ -8,7 +8,6 @@ $wishlistProduct=mysqli_real_escape_string($conn,$_POST['wish_list_id']);
 $productData = getSingleProduct("SELECT id,name,quantity as quantity_in_stock,original_price,discounted_price from `products` where id=" . $productId . "");
 $quantityInStock = $productData['quantity_in_stock'];
 $getProductInCart = getSingleProduct("SELECT * from `session_cart` where $where and product_id='" . $productId . "'");
-// echo "SELECT * from `session_cart` where $where and product_id='" . $productId . "'";
 if (empty($getProductInCart))
 {
     $quan = $quantity;
@@ -17,7 +16,6 @@ else
 {
     $quan= $getProductInCart['quantity'] + $quantity;
 }
-// echo $quan
 switch ($mode)
 {
     case 'add-to-cart':
@@ -87,6 +85,5 @@ switch ($mode)
 
         }
     break;
-
 }
 ?>

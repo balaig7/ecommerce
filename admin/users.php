@@ -2,8 +2,7 @@
 $title="USERS";
 include __DIR__."/loader.php";
 $users=dbQuery('select `login`.id,`login`.display_name,`login`.status,`login`.created_at,`users`.address,`users`.city,`users`.country from `login` inner join `users` on `login`.profile_id=`users`.id');
-// echo "<pre>";
-// print_r($users);
+
 ?>
 
 <div class="main-content">
